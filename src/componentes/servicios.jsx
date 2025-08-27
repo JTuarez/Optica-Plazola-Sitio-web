@@ -48,7 +48,7 @@ function Servicios() {
                 src={Lentesmultifocales}
                 className="card-img-top"
                 alt="Lentes Multifocales"
-                style={{ height: "550px", objectFit: "cover" }}
+                style={{ height: "500px", objectFit: "cover" }}
               />
               <div className="card-body text-center">
                 <h5 className="card-title">Lentes multifocales</h5>
