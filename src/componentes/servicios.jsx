@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import fpesclerales from "../assets/img/fp-esclerales.jpg";
-
+import Lentesmultifocales from "../assets/img/lentes-multifocales.png";
 function Servicios() {
   return (
     <section className="container my-5" id="servicios">
@@ -45,7 +45,7 @@ function Servicios() {
           >
             <div className="card h-100 shadow">
               <img
-                src={fpesclerales}
+                src={Lentesmultifocales}
                 className="card-img-top"
                 alt="Lentes Multifocales"
                 style={{ height: "550px", objectFit: "cover" }}

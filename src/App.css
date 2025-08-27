@@ -1,8 +1,5 @@
-.carousel,
-.carousel-inner,
-.carousel-item,
-.carousel-item img {
-  width: 100vw;
-  height: 100vh;
+.banner-img {
+  height: 80vh;
   object-fit: cover;
+  object-position: center;
 }

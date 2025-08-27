@@ -1,4 +1,3 @@
-// src/Carousel.jsx
 import React from "react";
 import img1 from "../assets/img/david.png";
 import img2 from "../assets/img/fp-1.jpg";
@@ -10,32 +9,17 @@ function Carousel() {
       id="mainCarousel"
       className="carousel slide"
       data-bs-ride="carousel"
-      style={{ height: "80vh" }} // ✅ Contenedor padre de los carruseles
+      style={{ height: "80vh" }}
     >
       <div className="carousel-inner" style={{ height: "100%" }}>
         <div className="carousel-item active" style={{ height: "100%" }}>
-          <img
-            src={img1}
-            className="d-block w-100"
-            alt="Banner 1"
-            style={{ height: "100%", objectFit: "cover" }}
-          />
+          <img src={img1} className="d-block w-100 banner-img" alt="Banner 1" />
         </div>
         <div className="carousel-item" style={{ height: "100%" }}>
-          <img
-            src={img2}
-            className="d-block w-100"
-            alt="Banner 2"
-            style={{ height: "100%", objectFit: "cover" }}
-          />
+          <img src={img2} className="d-block w-100 banner-img" alt="Banner 2" />
         </div>
         <div className="carousel-item" style={{ height: "100%" }}>
-          <img
-            src={img3}
-            className="d-block w-100"
-            alt="Banner 3"
-            style={{ height: "100%", objectFit: "contain" }}
-          />
+          <img src={img3} className="d-block w-100 banner-img" alt="Banner 3" />
         </div>
       </div>
 
