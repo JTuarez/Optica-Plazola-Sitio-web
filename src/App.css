@@ -1,5 +1,50 @@
 .banner-img {
   height: 80vh;
   object-fit: cover;
-  object-position: center;
+  object-position: top;
+}
+
+.img-servicios {
+  height: 600px;
+  object-fit: cover;
+}
+
+.btn-contactar {
+  white-space: nowrap;
+  text-align: center;
+  font-size: 20px;
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 12px 64px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+}
+
+.btn-contactar:hover {
+  background-color: #b47e36;
+}
+
+.carousel-texto {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  font-size: 30px;
+  transform: translate(-50%, -50%);
+  color: beige;
+  z-index: 10;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.arte {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 3rem;
+  font-weight: bold;
 }

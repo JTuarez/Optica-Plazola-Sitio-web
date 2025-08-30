@@ -1,7 +1,5 @@
 import React from "react";
 import img1 from "../assets/img/david.png";
-import img2 from "../assets/img/fp-1.jpg";
-import img3 from "../assets/img/logo-fp2.png";
 
 function Carousel() {
   return (
@@ -11,16 +9,28 @@ function Carousel() {
       data-bs-ride="carousel"
       style={{ height: "80vh" }}
     >
+      <div className="carousel-texto">
+        <h2 className="arte">Hacemos arte con tus ojos</h2>
+      </div>
       <div className="carousel-inner" style={{ height: "100%" }}>
         <div className="carousel-item active" style={{ height: "100%" }}>
-          <img src={img1} className="d-block w-100 banner-img" alt="Banner 1" />
+          <img
+            src={img1}
+            className="d-block w-100 banner-img"
+            alt="Arte con Fernando Plazola"
+          />
         </div>
         <div className="carousel-item" style={{ height: "100%" }}>
-          <img src={img2} className="d-block w-100 banner-img" alt="Banner 2" />
+          <img src={img1} className="d-block w-100 banner-img" alt="Banner 2" />
         </div>
         <div className="carousel-item" style={{ height: "100%" }}>
-          <img src={img3} className="d-block w-100 banner-img" alt="Banner 3" />
+          <img src={img1} className="d-block w-100 banner-img" alt="Banner 3" />
         </div>
+
+        {/* Botón Contactar */}
+        <a href="#contacto" className="btn-contactar">
+          <span>Agendar ahora</span>
+        </a>
       </div>
 
       {/* Flechas */}

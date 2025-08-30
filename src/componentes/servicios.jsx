@@ -1,7 +1,8 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import fpesclerales from "../assets/img/fp-esclerales.jpg";
+import fpesclerales from "../assets/img/f-escleral.png";
 import Lentesmultifocales from "../assets/img/lentes-multifocales.png";
+
 function Servicios() {
   return (
     <section className="container my-5" id="servicios">
@@ -16,16 +17,15 @@ function Servicios() {
             className="text-decoration-none text-dark"
             style={{ display: "block" }}
           >
-            <div className="card h-100 shadow">
+            <div className="card h-100 shadow fs-4">
               <img
                 src={fpesclerales}
-                className="card-img-top"
+                className="card-img-top img-servicios"
                 alt="Lentes Esclerales"
-                style={{ height: "550px", objectFit: "cover" }}
               />
               <div className="card-body text-center">
-                <h5 className="card-title">
-                  Lentes esclerales y Gas Permeable para queratocono
+                <h5 className="card-title fs-3">
+                  Lentes Esclerales y Gas Permeable para Queratocono
                 </h5>
                 <p className="card-text">
                   Tratamiento especializado para queratocono y otras
@@ -43,15 +43,14 @@ function Servicios() {
             className="text-decoration-none text-dark"
             style={{ display: "block" }}
           >
-            <div className="card h-100 shadow">
+            <div className="card h-100 shadow fs-4">
               <img
                 src={Lentesmultifocales}
-                className="card-img-top"
+                className="card-img-top img-servicios"
                 alt="Lentes Multifocales"
-                style={{ height: "500px", objectFit: "cover" }}
               />
               <div className="card-body text-center">
-                <h5 className="card-title">Lentes multifocales</h5>
+                <h5 className="card-title fs-3">Lentes multifocales</h5>
                 <p className="card-text">
                   Visión clara de lejos y cerca con lentes de última generación.
                 </p>
