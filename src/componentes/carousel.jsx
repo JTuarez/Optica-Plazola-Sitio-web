@@ -10,7 +10,7 @@ function Carousel() {
       style={{ height: "80vh" }}
     >
       <div className="carousel-texto">
-        <h2 className="arte">Hacemos arte con tus ojos</h2>
+        <h2 className="arte">Hacemos arte para tus ojos</h2>
       </div>
       <div className="carousel-inner" style={{ height: "100%" }}>
         <div className="carousel-item active" style={{ height: "100%" }}>
@@ -29,7 +29,7 @@ function Carousel() {
 
         {/* Botón Contactar */}
         <a href="#contacto" className="btn-contactar">
-          <span>Agendar ahora</span>
+          <span>Agendar sesión sin costo</span>
         </a>
       </div>
 
