@@ -107,17 +107,22 @@
     font-size: 1.8rem;
   }
 }
+
 .card {
-  color: #b47e36;
-  border: 4px solid #b47e36;
+  border: 4px solid #b47e36; /* borde marrón siempre */
   border-radius: 12px;
 }
 
+.card:hover {
+  border: 2px solid #b47e36;
+}
+
 .img-servicios {
+  border: 1px solid #dc9648;
   object-fit: cover;
   transition: transform 1s ease;
 }
 
 .card:hover .img-servicios {
-  transform: scale(0.96);
+  transform: scale(0.99); /* solo zoom interno */
 }
