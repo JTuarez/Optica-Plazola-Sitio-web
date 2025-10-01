@@ -122,13 +122,13 @@
 
 :root {
   --plazola-turquesa: #12c0c7;
-  --plazola-azul: #0d1b2a;
+  --plazola-azul: #b47e36;
   --plazola-azul-20: rgba(13, 27, 42, 0.08);
   --plazola-rosado: #c57b6a;
 }
 
 .booking-hero {
-  background: linear-gradient(135deg, var(--plazola-azul) 0%, #142840 100%);
+  background: linear-gradient(var(--plazola-azul));
   color: #fff;
   border-radius: 1.25rem;
   padding: 2rem;
