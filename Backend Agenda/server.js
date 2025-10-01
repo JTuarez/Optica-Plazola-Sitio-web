@@ -1,4 +1,3 @@
-// server.js
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -6,8 +5,11 @@ require("dotenv").config();
 const app = express();
 
 // Middlewares
-app.use(cors()); // permite que React (frontend) hable con este backend
-app.use(express.json()); // para poder recibir JSON en las peticiones
+app.use(cors());
+app.use(express.json());
+
+// Rutas
+app.use("/api/reservas", require("./routes/reservas")); // 👈 AÑADIDO
 
 // Ruta de prueba
 app.get("/", (req, res) => {

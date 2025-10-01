@@ -1,0 +1,17 @@
+body {
+  padding-top: 100px;
+  font-family: "Open Sans", sans-serif;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 h4,
+h5,
+h6 {
+  font-family: "Cinzel", serif;
+}
