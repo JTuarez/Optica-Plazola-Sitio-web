@@ -8,7 +8,7 @@ function Carousel() {
       id="mainCarousel"
       className="carousel slide"
       data-bs-ride="carousel"
-      style={{ height: "80vh" }}
+      style={{ height: "70vh" }}
     >
       <div className="carousel-texto">
         <h2 className="arte">Hacemos arte para tus ojos</h2>

@@ -7,12 +7,15 @@ import Footer from "./componentes/footer";
 import ReservasForm from "./componentes/ReservasForm";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
+import SobreMi from "./componentes/sobremi";
+import Contacto from "./componentes/contacto";
 
 function Home() {
   return (
     <>
       <Navbar />
       <Carousel />
+      <SobreMi />
       <Servicios />
       <Footer />
     </>
@@ -24,7 +27,7 @@ function AgendarPage() {
   return (
     <>
       <Navbar />
-      <main className="container my-4">
+      <main>
         <ReservasForm />
       </main>
       <Footer />
@@ -39,6 +42,18 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/agendar" element={<AgendarPage />} />
+
+        {/* Nueva ruta Contacto */}
+        <Route
+          path="/contacto"
+          element={
+            <>
+              <Navbar />
+              <Contacto />
+              <Footer />
+            </>
+          }
+        />
       </Routes>
     </>
   );

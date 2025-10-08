@@ -1,14 +1,16 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import logofp2 from "../assets/img/logo-fp.png";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top w-100 py-3">
+    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top w-100 py-3">
       <div className="container">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" to="/">
           <img src={logofp2} alt="Fernando-Plazola" height="70" />
-        </a>
+        </Link>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -20,30 +22,31 @@ function Navbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div
           className="collapse navbar-collapse justify-content-end"
           id="navbarNav"
         >
           <ul className="navbar-nav gap-4">
             <li className="nav-item">
-              <a className="nav-link active" href="#">
+              <Link className="nav-link active" to="/">
                 Inicio
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/#sobre-mi">
                 Sobre mí
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/#lentes">
                 Lentes
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/contacto">
                 Contacto
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

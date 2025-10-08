@@ -10,6 +10,7 @@ app.use(express.json());
 
 // Rutas
 app.use("/api/reservas", require("./routes/reservas")); // 👈 AÑADIDO
+app.use("/api/contacto", require("./routes/contacto"));
 
 // Ruta de prueba
 app.get("/", (req, res) => {

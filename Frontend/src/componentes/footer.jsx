@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import logofp2 from "../assets/img/logo-fp.png";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -11,11 +12,13 @@ function Footer() {
         <div className="row text-center text-md-start">
           {/* Columna Logo y Descripción */}
           <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <img
-              src={logofp2} // <-- pon aquí tu imagen, por ejemplo en /public/logo.png
-              alt="Óptica Plazola"
-              style={{ maxWidth: "180px", marginBottom: "1rem" }}
-            />
+            <Link to="/">
+              <img
+                src={logofp2}
+                alt="Óptica Plazola"
+                style={{ maxWidth: "180px", marginBottom: "1rem" }}
+              />
+            </Link>
             <p>
               Cuidamos tu visión con lentes especializados: esclerales,
               semirrígidos y multifocales. Claridad y confort para tus ojos.

@@ -227,3 +227,192 @@
 .btn-plazola:hover {
   filter: brightness(0.95);
 }
+
+.hero-agenda {
+  margin-top: 20px; /* separa del navbar fixed-top */
+  min-height: 240px;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.08);
+  position: relative;
+  width: 100%;
+}
+
+.hero-agenda__overlay {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(1px);
+}
+
+@media (min-width: 768px) {
+  .hero-agenda {
+    min-height: 320px;
+  }
+}
+
+.sobre-mi {
+  background-color: #f9f6ef;
+  border-radius: 20px;
+  padding: 3rem;
+}
+
+.sobre-mi-contenedor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.sobre-mi-imagen img {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  object-position: 63% center; /* 🔹 mueve la imagen un poco hacia el centro */
+}
+
+.sobre-mi-texto {
+  flex: 1;
+  max-width: 600px;
+}
+.sobre-mi-texto p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.sobre-mi-texto h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.sobre-mi-texto .subtitulo {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.btn-saber-mas {
+  border: 1.5px solid black;
+  background: transparent;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-saber-mas:hover {
+  background-color: black;
+  color: white;
+}
+
+.sobre-mi-redes {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sobre-mi-redes i {
+  font-size: 1.5rem;
+}
+
+.sobre-mi-redes a {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .sobre-mi {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .sobre-mi-contenedor {
+    flex-direction: column;
+  }
+
+  .sobre-mi-texto {
+    max-width: 100%;
+  }
+
+  .sobre-mi-imagen img {
+    width: 220px;
+    height: 220px;
+  }
+}
+/* Paleta base */
+:root {
+  --dorado: #c3a873; /* similar al dorado de tus títulos */
+  --arena: #e8ded0; /* fondo suave */
+  --turquesa: #00d4d4; /* acento de marca */
+  --azul-marino: #001f54; /* contraste */
+  --texto: #2b2b2b;
+}
+
+/* Sección con fondo tenue + textura */
+.contacto-hero {
+  background: linear-gradient(
+    180deg,
+    rgba(232, 222, 208, 0.45),
+    rgba(255, 255, 255, 0.9)
+  );
+}
+
+/* Panel izquierdo */
+.contacto-panel {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(195, 168, 115, 0.35);
+}
+.contacto-title {
+  font-weight: 800;
+  color: var(--dorado);
+  letter-spacing: 0.5px;
+}
+.contacto-sub {
+  color: #665e54;
+}
+.contacto-datos i {
+  color: var(--dorado);
+}
+
+/* Tarjeta del formulario con borde/halo elegante */
+.contacto-card {
+  position: relative;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid transparent;
+  background-image: linear-gradient(#fff, #fff),
+    linear-gradient(135deg, var(--dorado), var(--turquesa));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Inputs estilo cristalino */
+.contacto-input {
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+}
+.contacto-input:focus {
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 0 0 0.25rem rgba(0, 212, 212, 0.15);
+  background: #fff;
+}
+
+.contacto-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  filter: brightness(1.03);
+}
+
+/* Etiquetas flotantes más elegantes */
+.form-floating > label {
+  color: #8b877f;
+}
