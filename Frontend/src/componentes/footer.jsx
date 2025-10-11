@@ -40,11 +40,11 @@ function Footer() {
             </p>
             <p>
               <a href="#nosotros" className="text-white text-decoration-none">
-                Nosotros
+                Sobre mi
               </a>
             </p>
             <p>
-              <a href="#contacto" className="text-white text-decoration-none">
+              <a href="contacto" className="text-white text-decoration-none">
                 Contacto
               </a>
             </p>

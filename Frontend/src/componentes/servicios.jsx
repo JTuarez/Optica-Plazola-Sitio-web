@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import fpesclerales from "../assets/img/f-escleral.png";
 import Lentesmultifocales from "../assets/img/lentes-multifocales.png";
+import { Link } from "react-router-dom";
 
 function Servicios() {
   return (
@@ -16,8 +17,9 @@ function Servicios() {
       <div className="row g-4 justify-content-center">
         {/* Lentes Esclerales */}
         <div className="col-md-6 col-sm-12">
-          <a
-            href="#"
+          {/* 🔹 Cambié el <a> por un <Link> para dirigir a /queratocono */}
+          <Link
+            to="/queratocono"
             className="text-decoration-none text-dark"
             style={{ display: "block" }}
           >
@@ -39,7 +41,7 @@ function Servicios() {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
 
         {/* Lentes Multifocales */}

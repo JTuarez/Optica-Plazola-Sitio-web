@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
 import SobreMi from "./componentes/sobremi";
 import Contacto from "./componentes/contacto";
+import QueratoCono from "./componentes/queratocono"; // 👈 import con tu nombre exacto
 
 function Home() {
   return (
@@ -50,6 +51,18 @@ export default function App() {
             <>
               <Navbar />
               <Contacto />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* 🆕 Nueva ruta Queratocono */}
+        <Route
+          path="/queratocono"
+          element={
+            <>
+              <Navbar />
+              <QueratoCono />
               <Footer />
             </>
           }

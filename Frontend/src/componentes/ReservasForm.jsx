@@ -110,7 +110,6 @@ export default function ReservasForm({ onCreated }) {
 
   return (
     <>
-      {/* 🔹 Banner superior (AHORA dentro del return) */}
       <section
         className="hero-agenda position-relative w-100"
         style={{ backgroundImage: `url(${imgb})` }}
