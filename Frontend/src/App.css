@@ -1,12 +1,133 @@
-.banner-img {
-  height: 80vh;
-  object-fit: cover;
-  object-position: top;
+/* 🌐 Scroll suave para toda la página */
+html {
+  scroll-behavior: smooth;
 }
 
-.img-servicios {
-  height: 600px;
-  object-fit: cover;
+/* 🔄 Transiciones suaves para enlaces, botones e imágenes */
+a,
+button,
+.nav-link,
+.card,
+img {
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✨ Transición general de secciones (fade-in suave) */
+section,
+main,
+div[class*="container"],
+.row {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+}
+
+/* 🎬 Animación: aparición suave y desplazamiento ligero hacia arriba */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 💎 Hover de tarjetas con sombra elegante */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* 🧭 Suaviza las transiciones de navegación del navbar */
+.navbar,
+.navbar a {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Alto fijo del banner, responsivo */
+.hero-banner,
+.carousel-item {
+  height: 600px; /* tu alto de banner */
+}
+/* === Dropdown bonito para "Lentes" (sin cambiar colores del navbar) === */
+
+/* 1) Mantén el hover y también al pasar sobre el propio menú */
+.navbar .dropdown-hover {
+  position: relative;
+}
+.navbar .dropdown-hover:hover .dropdown-menu,
+.navbar .dropdown-hover:focus-within .dropdown-menu,
+.navbar .dropdown-hover .dropdown-menu:hover {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 2) Estilo del panel: blanco, redondeado, sombra elegante, animación */
+.navbar .dropdown-menu {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  padding: 0.5rem;
+  min-width: 230px;
+
+  /* pegado al trigger + animación suave */
+  top: 100%;
+  margin-top: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 140ms ease, transform 140ms ease;
+  pointer-events: none; /* evita flicker al salir/entrar */
+  z-index: 1050;
+}
+
+/* 3) “Flecha” que conecta visualmente con el texto "Lentes" */
+.navbar .dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 26px; /* ajusta si tu texto está más a la derecha */
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  transform: rotate(45deg);
+  border-radius: 3px 0 0 0;
+}
+
+/* 4) Ítems: más altos, con radio y hover suave (sin cambiar tipografía) */
+.navbar .dropdown-item {
+  color: #000;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px;
+  transition: background-color 0.18s ease, color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.navbar .dropdown-item:hover {
+  /* fondo crema claro acorde a tu paleta; texto negro para legibilidad */
+  background-color: rgba(225, 192, 128, 0.18); /* #E1C080 con opacidad */
+  color: #000;
+}
+
+/* 5) Separadores más sutiles (si llegas a usarlos) */
+.navbar .dropdown-divider {
+  margin: 0.35rem 0.5rem;
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+.hero-banner img,
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* ✅ muestra la imagen completa */
+  object-position: center; /* centrada */
+  background: #e9f2f9; /* color de relleno si sobran bordes */
 }
 
 .btn-contactar {
@@ -33,7 +154,7 @@
 
 .carousel-texto {
   position: absolute;
-  top: 30%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -44,14 +165,10 @@
 }
 
 .arte {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: clamp(1.8rem, 5vw, 3.5rem);
   font-weight: bold;
-  background: linear-gradient(
-    90deg,
-    #f9d976,
-    #b47e36,
-    #f9d976
-  ); /* Dorado + Bronce */
+  background: linear-gradient(90deg, #ffff, #dc9648); /* Dorado + Bronce */
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -101,23 +218,162 @@
   }
 }
 
-#servicios .card {
-  border: 4px solid #b47e36; /* borde marrón siempre */
-  border-radius: 12px;
+:root {
+  --brand-gold: #d6b77a;
+  --brand-gold-20: rgba(214, 183, 122, 0.2);
+  --brand-navy: #0b2e4d;
+  --brand-bg: #faf8f5;
+  --ink-700: #444;
+  --ink-500: #6b6b6b;
+  --turquesa: #12c0c7;
 }
 
-#servicios .card:hover {
-  border: 2px solid #b47e36;
+/* ====== Base de la card de servicios ====== */
+.service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(11, 46, 77, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    border-color 0.25s ease;
+  text-decoration: none;
 }
 
-.img-servicios {
-  border: 1px solid #dc9648;
-  object-fit: cover;
-  transition: transform 1s ease;
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  border-color: rgba(11, 46, 77, 0.18);
 }
 
-.card:hover .img-servicios {
-  transform: scale(0.99); /* solo zoom interno */
+/* Media con relación de aspecto estable y SIN recortar imagen */
+.service-media {
+  position: relative;
+  aspect-ratio: 16/9; /* mantiene proporción bonita */
+  background: linear-gradient(180deg, #ffffff, #f7f7f7);
+  display: grid;
+  place-items: center;
+}
+
+.service-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* ✅ muestra la imagen completa */
+  padding: 8px 12px; /* margen interno para que no “toque” bordes */
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.service-card:hover .service-img {
+  transform: scale(1.02);
+  filter: saturate(1.05);
+}
+
+/* Badge flotante */
+.service-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--brand-navy);
+  border: 1px solid rgba(11, 46, 77, 0.1);
+  backdrop-filter: blur(4px);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+/* Cuerpo */
+.service-body {
+  padding: 18px 18px 22px;
+}
+
+.service-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #e0a059; /* hace match con tu gradient-title */
+  margin-bottom: 0.5rem;
+}
+
+.service-text {
+  color: var(--ink-600, #555);
+  margin: 0 auto 1rem;
+  max-width: 48ch;
+}
+
+/* CTA con flecha */
+.service-cta {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: 700;
+  color: var(--brand-navy);
+  border-bottom: 2px solid transparent;
+  transition: gap 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.service-card:hover .service-cta {
+  gap: 0.65rem;
+  border-color: var(--brand-gold);
+  color: var(--brand-navy);
+}
+
+/* ====== Skin 1: Glow (resplandor dorado sutil) ====== */
+.service-card--glow {
+  background-image: linear-gradient(#fff, #fff),
+    radial-gradient(120% 80% at 100% 0%, var(--brand-gold-20), transparent 60%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+}
+
+/* ====== Skin 2: Glass (borde degradado + glassy) ====== */
+.service-card--glass {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.92),
+      rgba(255, 255, 255, 0.96)
+    ),
+    linear-gradient(135deg, var(--brand-gold), var(--turquesa));
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  backdrop-filter: saturate(1.1) blur(2px);
+}
+
+/* ====== Skin 3: Outline (borde fino + hover marcado) ====== */
+.service-card--outline {
+  border: 1.5px solid rgba(11, 46, 77, 0.12);
+}
+.service-card--outline:hover {
+  border-color: var(--brand-gold);
+  box-shadow: 0 18px 44px rgba(214, 183, 122, 0.18);
+}
+
+/* ====== Ajustes del section Servicios ====== */
+#servicios .row > [class*="col-"] {
+  display: grid;
+}
+#servicios .row > [class*="col-"] > a,
+#servicios .row > [class*="col-"] > .service-card {
+  height: 100%;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 576px) {
+  .service-title {
+    font-size: 1.15rem;
+  }
+  .service-text {
+    font-size: 0.975rem;
+  }
+  .service-badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
 }
 
 :root {
@@ -229,24 +485,15 @@
 }
 
 .hero-agenda {
-  margin-top: 20px; /* separa del navbar fixed-top */
+  display: flex;
+  align-items: center;
   min-height: 240px;
-  background-size: cover;
-  background-position: center;
-  border-bottom: 3px solid rgba(0, 0, 0, 0.08);
-  position: relative;
   width: 100%;
 }
 
 .hero-agenda__overlay {
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(1px);
-}
-
-@media (min-width: 768px) {
-  .hero-agenda {
-    min-height: 320px;
-  }
 }
 
 .sobre-mi {
@@ -322,6 +569,36 @@
   color: black;
   font-weight: 500;
 }
+:root {
+  --gold: #cfa24a;
+  --gold-hover: #b98933;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+  border-radius: 12px;
+  padding-inline: 20px;
+  box-shadow: 0 10px 20px rgba(207, 162, 74, 0.25);
+}
+.btn-gold:hover,
+.btn-gold:focus {
+  background: var(--gold-hover);
+  color: #fff;
+}
+
+.btn-gold-outline {
+  background: transparent;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  border-radius: 12px;
+  padding-inline: 20px;
+}
+.btn-gold-outline:hover,
+.btn-gold-outline:focus {
+  border-color: var(--gold-hover);
+  color: var(--gold-hover);
+}
 
 /* ✅ Responsive */
 @media (max-width: 768px) {
@@ -342,14 +619,6 @@
     width: 220px;
     height: 220px;
   }
-}
-/* Paleta base */
-:root {
-  --dorado: #c3a873; /* similar al dorado de tus títulos */
-  --arena: #e8ded0; /* fondo suave */
-  --turquesa: #00d4d4; /* acento de marca */
-  --azul-marino: #001f54; /* contraste */
-  --texto: #2b2b2b;
 }
 
 /* Sección con fondo tenue + textura */
@@ -438,7 +707,7 @@
 
 /* Título principal con gradiente dorado-azul */
 .gradient-title {
-  color: #0b2e4d; /* azul marino profundo */
+  color: #e0a059;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
@@ -570,7 +839,10 @@
 .querato-section h2,
 .querato-section h3,
 .querato-section h5 {
-  color: var(--brand-navy);
+  color: #e0a059; /* cambiado desde #0b2e4d */
+}
+.querato-section .info-card .card-title {
+  color: #e0a059;
 }
 .querato-section p {
   color: var(--ink-700);
@@ -581,4 +853,21 @@
   .querato-section .mb-5 {
     margin-bottom: 3.2rem !important;
   }
+}
+/* Imagen del especialista (rectangular, más compacta y menos alta) */
+.contactologo-img {
+  width: 100%;
+  max-width: 25rem; /* reduce el ancho máximo total */
+  max-height: 25rem; /* limita la altura para evitar que se alargue */
+  height: auto; /* mantiene la proporción */
+  object-fit: cover; /* mantiene un recorte natural sin deformar */
+  border-radius: 8px; /* bordes suaves, no redondeados */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 auto;
+}
+
+.contactologo-img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.15);
 }

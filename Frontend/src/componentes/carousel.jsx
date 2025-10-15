@@ -1,5 +1,7 @@
 import React from "react";
 import img1 from "../assets/img/david.png";
+import img2 from "../assets/img/banner_esclerales.png";
+import img3 from "../assets/img/multifocal_banner.png";
 import { Link } from "react-router-dom";
 
 function Carousel() {
@@ -8,33 +10,41 @@ function Carousel() {
       id="mainCarousel"
       className="carousel slide"
       data-bs-ride="carousel"
-      style={{ height: "70vh" }}
+      style={{ height: "60vh" }}
     >
-      <div className="carousel-texto">
-        <h2 className="arte">Hacemos arte para tus ojos</h2>
-      </div>
       <div className="carousel-inner" style={{ height: "100%" }}>
-        <div className="carousel-item active" style={{ height: "100%" }}>
+        {/* 🔹 Primer banner con texto */}
+        <div
+          className="carousel-item active position-relative"
+          style={{ height: "100%" }}
+        >
           <img
             src={img1}
             className="d-block w-100 banner-img"
             alt="Arte con Fernando Plazola"
           />
-        </div>
-        <div className="carousel-item" style={{ height: "100%" }}>
-          <img src={img1} className="d-block w-100 banner-img" alt="Banner 2" />
-        </div>
-        <div className="carousel-item" style={{ height: "100%" }}>
-          <img src={img1} className="d-block w-100 banner-img" alt="Banner 3" />
+          <div className="carousel-texto text-center ">
+            <h2 className="arte fw-bold">Hacemos arte para tus ojos</h2>
+          </div>
         </div>
 
-        {/* Botón Contactar */}
+        {/* 🔹 Segundo banner sin texto */}
+        <div className="carousel-item" style={{ height: "100%" }}>
+          <img src={img2} className="d-block w-100 banner-img" alt="Banner 2" />
+        </div>
+
+        {/* 🔹 Tercer banner sin texto */}
+        <div className="carousel-item" style={{ height: "100%" }}>
+          <img src={img3} className="d-block w-100 banner-img" alt="Banner 3" />
+        </div>
+
+        {/* 🔹 Botón Contactar */}
         <Link to="/agendar" className="btn-contactar">
           <span>Agendar sesión sin costo</span>
         </Link>
       </div>
 
-      {/* Flechas */}
+      {/* 🔹 Flechas */}
       <button
         className="carousel-control-prev"
         type="button"
@@ -44,6 +54,7 @@ function Carousel() {
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
         <span className="visually-hidden">Anterior</span>
       </button>
+
       <button
         className="carousel-control-next"
         type="button"

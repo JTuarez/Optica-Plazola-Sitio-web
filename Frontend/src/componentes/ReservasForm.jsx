@@ -110,19 +110,27 @@ export default function ReservasForm({ onCreated }) {
 
   return (
     <>
+      {/* 🔹 Banner superior (AHORA dentro del return) */}
       <section
         className="hero-agenda position-relative w-100"
-        style={{ backgroundImage: `url(${imgb})` }}
+        style={{
+          background: "linear-gradient(180deg, #d6a04e, #b97d3e)", // dorado suave → café dorado
+          color: "white",
+        }}
       >
-        <div className="hero-agenda__overlay position-absolute top-0 start-0 w-100 h-100" />
-        <div className="container position-relative text-center py-5">
-          <p className="text-uppercase fw-bold mb-2 text-primary">
+        <div className="container text-center py-5">
+          <p
+            className="text-uppercase fw-bold mb-3"
+            style={{ color: "#fff3e0", letterSpacing: "1px" }}
+          >
             Porque sabemos lo importante que es la calidad visual
           </p>
-          <h1 className="fw-bold display-6 mb-2">
-            Contarás con un asesoriamiento personalizado
+
+          <h1 className="fw-bold display-6 mb-2 text-white">
+            Contarás con un asesoramiento personalizado
           </h1>
-          <p className="lead mb-0">Porque hacemos arte para tus ojos</p>
+
+          <h3>Porque hacemos arte para tus ojos</h3>
         </div>
       </section>
 

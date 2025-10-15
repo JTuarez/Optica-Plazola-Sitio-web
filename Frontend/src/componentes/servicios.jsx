@@ -17,57 +17,89 @@ function Servicios() {
       <div className="row g-4 justify-content-center">
         {/* Lentes Esclerales */}
         <div className="col-md-6 col-sm-12">
-          {/* 🔹 Cambié el <a> por un <Link> para dirigir a /queratocono */}
           <Link
             to="/queratocono"
-            className="text-decoration-none text-dark"
-            style={{ display: "block" }}
+            className="text-decoration-none text-dark d-block"
           >
-            <div className="card h-100 shadow fs-4">
-              <div className="img-container p-2">
+            <article className="service-card service-card--glow h-100">
+              <div className="service-media">
                 <img
                   src={fpesclerales}
-                  className="card-img-top img-servicios"
-                  alt="Lentes Esclerales"
+                  className="service-img"
+                  alt="Lentes Esclerales y Gas Permeable"
+                  loading="lazy"
                 />
-                <div className="card-body text-center">
-                  <h5 className="card-title fs-3">
-                    Esclerales y Gas Permeable para Queratocono
-                  </h5>
-                  <p className="card-text">
-                    Tratamiento especializado para queratocono y otras
-                    irregularidades corneales.
-                  </p>
-                </div>
+                <span className="service-badge">Queratocono</span>
               </div>
-            </div>
+              <div className="service-body text-center">
+                <h5 className="service-title">
+                  Esclerales y Gas Permeable para Queratocono
+                </h5>
+                <p className="service-text">
+                  Tratamiento especializado para queratocono y otras
+                  irregularidades corneales.
+                </p>
+                <span className="service-cta">
+                  Ver detalles
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M8 5l8 7-8 7"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </article>
           </Link>
         </div>
 
         {/* Lentes Multifocales */}
         <div className="col-md-6 col-sm-12">
-          <a
-            href="#"
-            className="text-decoration-none text-dark"
-            style={{ display: "block" }}
+          <Link
+            to="/multifocales"
+            className="text-decoration-none text-dark d-block"
           >
-            <div className="card h-100 shadow fs-4">
-              <div className="img-container p-2">
+            <article className="service-card service-card--glow h-100">
+              <div className="service-media">
                 <img
                   src={Lentesmultifocales}
-                  className="card-img-top img-servicios"
+                  className="service-img"
                   alt="Lentes Multifocales"
+                  loading="lazy"
                 />
-                <div className="card-body text-center">
-                  <h5 className="card-title fs-3">Lentes multifocales</h5>
-                  <p className="card-text">
-                    Visión clara de lejos y cerca con lentes de última
-                    generación.
-                  </p>
-                </div>
+                <span className="service-badge">Presbicia</span>
               </div>
-            </div>
-          </a>
+              <div className="service-body text-center">
+                <h5 className="service-title">Lentes Multifocales</h5>
+                <p className="service-text">
+                  Visión clara de lejos y cerca con lentes de última generación.
+                </p>
+                <span className="service-cta">
+                  Ver detalles
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M8 5l8 7-8 7"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </article>
+          </Link>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import logofp2 from "../assets/img/logo-fp.png";
 import { Link } from "react-router-dom";
 
@@ -40,13 +41,13 @@ function Footer() {
             </p>
             <p>
               <a href="#nosotros" className="text-white text-decoration-none">
-                Sobre mi
+                Sobre mí
               </a>
             </p>
             <p>
-              <a href="contacto" className="text-white text-decoration-none">
+              <Link to="/contacto" className="text-white text-decoration-none">
                 Contacto
-              </a>
+              </Link>
             </p>
           </div>
 
@@ -58,35 +59,30 @@ function Footer() {
             >
               Contacto
             </h5>
-
             <p>
               <a
-                href="https://www.google.com/maps/place/Fernando+Plazola+Salazar/@-33.425656,-70.6166181,17z/data=!3m1!4b1!4m6!3m5!1s0x9662cf0e40ca3a05:0xc0699802abd6f384!8m2!3d-33.4256605!4d-70.6140432!16s%2Fg%2F11xrdc_pg_?entry=ttu&g_ep=EgoyMDI1MDkxNS4wIKXMDSoASAFQAw%3D%3D"
+                href="https://www.google.com/maps/place/Fernando+Plazola+Salazar/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white text-decoration-underline"
               >
-                <i className="bi bi-geo-alt-fill me-0"></i> Nueva Providencia
-                1881 Oficina 2109. Santiago
+                Nueva Providencia 1881 Oficina 2109. Santiago
               </a>
             </p>
-
             <p>
               <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=contacto@opticafp.cl"
+                href="mailto:contacto@opticafp.cl"
                 className="text-white text-decoration-underline"
               >
-                <i className="bi bi-envelope-fill me-0"></i>{" "}
                 contacto@opticafp.cl
               </a>
             </p>
-
             <p>
               <a
                 href="tel:+56920211535"
                 className="text-white text-decoration-underline"
               >
-                <i className="bi bi-telephone-fill me-0"></i> +56 9 2021 1535
+                +56 9 2021 1535
               </a>
             </p>
           </div>
@@ -99,29 +95,41 @@ function Footer() {
             >
               Síguenos
             </h5>
-            <a
-              href="#"
-              className="btn btn-outline-light btn-floating m-1"
-              style={{ borderRadius: "50%" }}
-            >
-              <i className="bi bi-facebook"></i>
-            </a>
-            <a
-              href="#"
-              className="btn btn-outline-light btn-floating m-1"
-              style={{ borderRadius: "50%" }}
-            >
-              <i className="bi bi-instagram"></i>
-            </a>
-            <a
-              href="#"
-              className="btn btn-outline-light btn-floating m-1"
-              style={{ borderRadius: "50%" }}
-            >
-              <i className="bi bi-whatsapp"></i>
-            </a>
+
+            <div className="d-flex justify-content-center gap-3">
+              {/* Facebook */}
+              <a
+                href="https://www.facebook.com/OpticaPlazola"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white fs-3 social-icon"
+              >
+                <i className="fab fa-facebook"></i>
+              </a>
+
+              {/* Instagram */}
+              <a
+                href="https://www.instagram.com/optica.plazola"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white fs-3 social-icon"
+              >
+                <i className="fab fa-instagram"></i>
+              </a>
+
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/56920211535"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white fs-3 social-icon"
+              >
+                <i className="fab fa-whatsapp"></i>
+              </a>
+            </div>
           </div>
         </div>
+
         <hr className="my-3" style={{ borderColor: "#E0A059" }} />
         <div className="text-center">
           <p className="mb-0">

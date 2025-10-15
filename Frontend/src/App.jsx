@@ -8,8 +8,11 @@ import ReservasForm from "./componentes/ReservasForm";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
 import SobreMi from "./componentes/sobremi";
+import SobreMiDos from "./componentes/sobremidos";
 import Contacto from "./componentes/contacto";
-import QueratoCono from "./componentes/queratocono"; // 👈 import con tu nombre exacto
+import QueratoCono from "./componentes/queratocono";
+import Multifocales from "./componentes/multifocales";
+import ScrollToTop from "./componentes/ScrollToTop"; // ✅ Asegúrate de que el nombre del archivo sea "scrolltop.jsx" o "ScrollToTop.jsx"
 
 function Home() {
   return (
@@ -40,11 +43,27 @@ export default function App() {
   return (
     <>
       <Toaster position="top-right" />
+      {/* ✅ Aquí el componente ScrollToTop */}
+      <ScrollToTop />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/agendar" element={<AgendarPage />} />
 
-        {/* Nueva ruta Contacto */}
+        <Route
+          path="/sobremidos"
+          element={
+            <>
+              <Navbar />
+              <main>
+                <SobreMiDos />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Ruta Contacto */}
         <Route
           path="/contacto"
           element={
@@ -56,13 +75,25 @@ export default function App() {
           }
         />
 
-        {/* 🆕 Nueva ruta Queratocono */}
+        {/* Ruta Queratocono */}
         <Route
           path="/queratocono"
           element={
             <>
               <Navbar />
               <QueratoCono />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Ruta Multifocales */}
+        <Route
+          path="/multifocales"
+          element={
+            <>
+              <Navbar />
+              <Multifocales />
               <Footer />
             </>
           }

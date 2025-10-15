@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import imglente from "../assets/img/lente_escleral.png";
-// import imgContacto from "../assets/img/contactologo.jpg";
+import imgsobremi from "../assets/img/fernando_sobremi.png";
 
 export default function QueratoCono() {
   return (
@@ -27,27 +27,30 @@ export default function QueratoCono() {
           </Col>
         </Row>
 
-        <div className="querato-box my-5 py-4 px-4 rounded-4 shadow-sm">
+        {/* ¿Qué es el queratocono? + Imagen */}
+        <div className="querato-box my-5 py-4 px-5 rounded-4 shadow-lg">
           <Row className="align-items-center g-5">
             <Col md={6}>
               <img
                 src={imglente}
-                alt="Lente escleral"
+                alt="Lente escleral para queratocono"
                 className="img-fluid rounded shadow querato-hero-img"
               />
             </Col>
             <Col md={6}>
-              <h2 className="fw-bold mb-3">¿Qué es el Queratocono?</h2>
+              <h2 className="fw-bold mb-3">¿Qué es el queratocono?</h2>
               <p className="fs-5">
-                Es una alteración progresiva de la córnea que cambia su forma
-                natural por una más pronunciada, afectando directamente la
-                calidad de la visión. Lentes tradicionales o anteojos suelen no
-                corregirlo adecuadamente.
+                Es una condición en la que la córnea se adelgaza y adopta una
+                forma cónica, generando{" "}
+                <strong>visión borrosa o distorsionada</strong> y mayor
+                sensibilidad a la luz. Con <strong>lentes esclerales</strong> o
+                <strong> lentes RGP</strong> es posible recuperar una
+                <strong> visión clara y estable</strong>.
               </p>
               <ul className="fs-5 mb-0 brand-list">
-                <li>Visión borrosa o distorsionada</li>
-                <li>Alta sensibilidad a la luz (fotofobia)</li>
-                <li>Variaciones frecuentes en la graduación</li>
+                <li>Visión más nítida y estable</li>
+                <li>Mayor confort en córneas sensibles</li>
+                <li>Menos variaciones en la graduación</li>
               </ul>
             </Col>
           </Row>
@@ -104,7 +107,7 @@ export default function QueratoCono() {
         {/* Por qué elegir Óptica Plazola */}
         <Row className="mb-4 text-center">
           <Col>
-            <h2 className="fw-bold">¿Por qué elegir Óptica Plazola?</h2>
+            <h2 className="fw-bold">¿Por qué elegir Fernando Plazola?</h2>
           </Col>
         </Row>
         <Row className="g-4 mb-5">
@@ -133,20 +136,24 @@ export default function QueratoCono() {
         </Row>
 
         {/* Contactólogo + CTA */}
-        <Row className="align-items-center g-4">
+        <Row className="align-items-center g-5 mb-5 mt-5 querato-contacto">
           <Col md={5} className="text-center">
-            <div className="ratio ratio-1x1 bg-white border rounded-circle d-flex align-items-center justify-content-center shadow-sm contactologo-ph">
-              <span className="text-muted">
-                Foto del contactólogo (placeholder)
-              </span>
-            </div>
+            <img
+              src={imgsobremi}
+              alt="Especialista en lentes esclerales"
+              className="img-fluid contactologo-img shadow"
+            />
           </Col>
           <Col md={7}>
-            <h3 className="fw-bold mb-2">
+            <h3 className="fw-bold mb-2" style={{ color: "#B47E36" }}>
               Evaluación con nuestro especialista
             </h3>
             <p className="fs-5">
-              Analizamos tu caso, definimos el mejor diseño (escleral o RGP)...
+              Evaluamos tu caso de forma personalizada para ofrecerte la mejor
+              solución visual. Diseñamos <strong>lentes esclerales</strong> o{" "}
+              <strong>RGP a medida</strong>, priorizando tu comodidad, salud
+              ocular y la claridad de tu visión. Agenda tu evaluación sin costo
+              y da el primer paso hacia una mejor calidad visual.
             </p>
             <Button href="/agendar" size="lg" className="btn-brand">
               Agendar Evaluación
