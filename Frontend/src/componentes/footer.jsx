@@ -40,9 +40,13 @@ function Footer() {
               </a>
             </p>
             <p>
-              <a href="#nosotros" className="text-white text-decoration-none">
+              {/* 🔗 Enlace actualizado para ir al componente sobremidos.jsx */}
+              <Link
+                to="/sobremidos"
+                className="text-white text-decoration-none"
+              >
                 Sobre mí
-              </a>
+              </Link>
             </p>
             <p>
               <Link to="/contacto" className="text-white text-decoration-none">

@@ -1,18 +1,14 @@
-// src/componentes/ReservasForm.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-import { createReserva } from "../services/api";
+import { createReserva, getDisponibilidad } from "../services/api";
 import { Card, Button } from "react-bootstrap";
-import imgb from "../assets/img/banner_lentes.jpg";
+import "dayjs/locale/es";
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
+dayjs.locale("es");
 
 const schema = z.object({
   nombre_cliente: z.string().min(2, "Ingresa el nombre"),
@@ -22,56 +18,29 @@ const schema = z.object({
 
 const TZ = import.meta.env.VITE_TZ || "America/Santiago";
 
-const mockDisponibilidad = (fechaISO) => {
-  const base = [
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30",
-  ];
-  return base.map((t, i) => ({ time: t, disponible: !(i % 3 === 0) }));
-};
-
 export default function ReservasForm({ onCreated }) {
   // -------- Calendario --------
-  const [viewMonth, setViewMonth] = useState(dayjs().tz(TZ).startOf("month"));
-  const [selectedDate, setSelectedDate] = useState(
-    dayjs().tz(TZ).startOf("day")
-  );
-  const start = viewMonth.startOf("week");
+  const [viewMonth, setViewMonth] = useState(dayjs().startOf("month"));
+  const [selectedDate, setSelectedDate] = useState(dayjs().startOf("day"));
+
+  const firstOfMonth = viewMonth.startOf("month");
+  const dow = firstOfMonth.day(); // 0=dom
+  const offsetToMonday = (dow + 6) % 7;
+  const start = firstOfMonth.subtract(offsetToMonday, "day").startOf("day");
+
   const days = useMemo(
     () => Array.from({ length: 42 }, (_, i) => start.add(i, "day")),
     [start]
   );
-  const isToday = (d) => d.isSame(dayjs().tz(TZ), "day");
+
+  const isPast = (d) => d.isBefore(dayjs().startOf("day"), "day");
+  const isToday = (d) => d.isSame(dayjs(), "day");
   const isSelected = (d) => d.isSame(selectedDate, "day");
   const inCurrentMonth = (d) => d.isSame(viewMonth, "month");
   const nextMonth = () => setViewMonth((m) => m.add(1, "month"));
   const prevMonth = () => setViewMonth((m) => m.subtract(1, "month"));
 
-  // -------- Slots --------
-  const [slots, setSlots] = useState([]);
-  const [loadingSlots, setLoadingSlots] = useState(false);
-  const fetchSlots = (dateObj) => {
-    setLoadingSlots(true);
-    try {
-      const fechaISO = dateObj.format("YYYY-MM-DD");
-      const data = mockDisponibilidad(fechaISO);
-      setSlots(data || []);
-      setValue("slot", "");
-    } finally {
-      setLoadingSlots(false);
-    }
-  };
-  useEffect(() => {
-    fetchSlots(selectedDate);
-  }, [selectedDate]);
-
-  // -------- Form --------
+  // -------- Form (declarado ANTES de fetchSlots) --------
   const {
     register,
     handleSubmit,
@@ -83,38 +52,92 @@ export default function ReservasForm({ onCreated }) {
     resolver: zodResolver(schema),
     defaultValues: { nombre_cliente: "", email: "", slot: "" },
   });
+
+  // -------- Slots --------
+  const [slots, setSlots] = useState([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
+  const fetchSlots = async (dateObj) => {
+    setLoadingSlots(true);
+    try {
+      const fecha = dateObj.format("YYYY-MM-DD");
+
+      // horas ocupadas desde el backend
+      const { data: horasReservadas } = await getDisponibilidad(fecha);
+
+      // horario base del día
+      const base = [
+        "10:00",
+        "11:00",
+        "12:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+        "18:00",
+      ];
+
+      // marca como no disponible las reservadas
+      const data = base.map((t) => ({
+        time: t,
+        disponible: !horasReservadas.includes(t),
+      }));
+
+      setSlots(data);
+      setValue("slot", "");
+    } catch (err) {
+      console.error("❌ Error al cargar disponibilidad:", err);
+      toast.error("No se pudo cargar la disponibilidad");
+      setSlots([]);
+      setValue("slot", "");
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSlots(selectedDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate]);
+
   const selectedSlot = watch("slot");
 
   const onSubmit = async (values) => {
-    const fechaFinal = dayjs.tz(
-      `${selectedDate.format("YYYY-MM-DD")} ${values.slot}`,
-      "YYYY-MM-DD HH:mm",
-      TZ
-    );
+    // construye fecha local simple
+    const fechaStr = `${selectedDate.format("YYYY-MM-DD")} ${values.slot}`;
+    const fechaFinal = dayjs(fechaStr, "YYYY-MM-DD HH:mm");
+
     const payload = {
-      nombre_cliente: values.nombre_cliente.trim(),
-      email: values.email.trim(),
+      nombre_cliente: values.nombre_cliente.replace(/\s+/g, " ").trim(),
+      email: values.email.trim().toLowerCase(),
       fecha_hora: fechaFinal.format("YYYY-MM-DD HH:mm:ss"),
     };
+
     try {
       await createReserva(payload);
       toast.success("Reserva creada y correo enviado ✅");
       reset({ nombre_cliente: "", email: "", slot: "" });
       onCreated?.();
-      fetchSlots(selectedDate);
+      fetchSlots(selectedDate); // refresca para marcar ocupado
     } catch (e) {
-      console.error(e);
-      toast.error("No se pudo crear la reserva");
+      if (e?.response?.status === 409) {
+        toast.error("Ese horario ya fue reservado. Elige otro.");
+        fetchSlots(selectedDate);
+        return;
+      }
+      console.error("Error al crear reserva:", e?.response?.data || e.message);
+      toast.error(e?.response?.data?.error || "No se pudo crear la reserva");
     }
   };
 
   return (
     <>
-      {/* 🔹 Banner superior (AHORA dentro del return) */}
+      {/* Banner */}
       <section
         className="hero-agenda position-relative w-100"
         style={{
-          background: "linear-gradient(180deg, #d6a04e, #b97d3e)", // dorado suave → café dorado
+          background: "linear-gradient(180deg, #d6a04e, #b97d3e)",
           color: "white",
         }}
       >
@@ -125,17 +148,14 @@ export default function ReservasForm({ onCreated }) {
           >
             Porque sabemos lo importante que es la calidad visual
           </p>
-
           <h1 className="fw-bold display-6 mb-2 text-white">
             Contarás con un asesoramiento personalizado
           </h1>
-
           <h3>Porque hacemos arte para tus ojos</h3>
         </div>
       </section>
 
       <div className="container my-4">
-        {/* Hero (tu card existente) */}
         <Card className="booking-hero border-0 mb-4">
           <Card.Body className="p-4">
             <h1 className="booking-title display-6 mb-2">Reserva tu hora</h1>
@@ -186,8 +206,10 @@ export default function ReservasForm({ onCreated }) {
                         isSelected(d) ? "selected" : "",
                         isToday(d) ? "today" : "",
                         !inCurrentMonth(d) ? "text-muted" : "",
+                        isPast(d) ? "disabled" : "",
                       ].join(" ")}
-                      onClick={() => setSelectedDate(d)}
+                      onClick={() => !isPast(d) && setSelectedDate(d)}
+                      disabled={isPast(d)}
                     >
                       <div className="calendar-day">{d.date()}</div>
                     </button>
@@ -228,10 +250,11 @@ export default function ReservasForm({ onCreated }) {
                         className={`slot-btn ${
                           selectedSlot === s.time ? "active" : ""
                         }`}
-                        disabled={!s.disponible}
+                        disabled={!s.disponible || isSubmitting}
                         onClick={() =>
                           setValue("slot", s.time, { shouldValidate: true })
                         }
+                        title={!s.disponible ? "Horario ocupado" : ""}
                       >
                         {s.time}
                       </button>

@@ -1,6 +1,8 @@
 // src/componentes/SobreMi.jsx
 import React from "react";
 import fotoPerfil from "../assets/img/fp-1.jpg";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { Link } from "react-router-dom";
 
 export default function SobreMi() {
   return (
@@ -24,10 +26,12 @@ export default function SobreMi() {
             paciente
           </p>
 
-          <button className="btn-saber-mas">Saber más &gt;</button>
+          <Link to="/sobremidos" className="btn-saber-mas">
+            Saber más &gt;
+          </Link>
 
           <div className="sobre-mi-redes">
-            <i className="bi bi-instagram"></i>
+            <i className="fab fa-instagram"></i>
             <a
               href="https://www.instagram.com/optica.plazola"
               target="_blank"
