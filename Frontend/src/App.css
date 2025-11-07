@@ -881,7 +881,7 @@ div[class*="container"],
   transform: scale(1.02);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.15);
 }
-}.sobre-mi-redes {
+.sobre-mi-redes {
   margin-top: 1rem;
   display: flex;
   align-items: center;
