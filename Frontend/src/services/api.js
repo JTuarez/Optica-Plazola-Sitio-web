@@ -1,4 +1,3 @@
-// src/services/api.js
 import axios from "axios";
 
 // ✅ Usa la URL de Render directamente o desde entorno local si estás en desarrollo
@@ -15,6 +14,36 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
   timeout: 10000,
 });
+
+// ===================================================
+// 🧠 INTERCEPTOR: Reintento automático si Render “duerme”
+// ===================================================
+api.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const status = error?.response?.status;
+    const isTimeout = error?.code === "ECONNABORTED";
+    const shouldRetry =
+      (status === 502 || status === 504 || isTimeout) &&
+      !error.config.__retried;
+
+    if (shouldRetry) {
+      console.warn("🔁 Reintentando conexión con backend...");
+      error.config.__retried = true;
+
+      // “Despierta” Render haciendo un ping
+      try {
+        await fetch(`${normalized}/api/diag`, { cache: "no-store" });
+      } catch {}
+
+      // Espera breve y reintenta
+      await new Promise((r) => setTimeout(r, 1500));
+      return api.request(error.config);
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 // ========================
 // 🧾 Endpoints de reservas
