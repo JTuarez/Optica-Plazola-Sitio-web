@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { Link } from "react-router-dom";
 import imgs from "../assets/img/sobre_mi.jpg";
+import imgs2 from "../assets/img/atencion.jpg";
 
 // ✅ Puedes pasar una imagen secundaria por props si quieres
 //    <SobreMi secondaryImage={otraImg} />
@@ -11,11 +12,13 @@ export default function SobreMi({
   subtitle = "Fernando Plazola · Optómetra especializado",
   description = (
     <>
-      Evaluamos tu caso de forma personalizada para ofrecerte la mejor solución
-      visual. Diseñamos <strong>lentes esclerales</strong> o{" "}
-      <strong>RGP a medida</strong>, priorizando tu comodidad, salud ocular y la
-      claridad de tu visión. Agenda tu evaluación sin costo y da el primer paso
-      hacia una mejor calidad visual.
+      Me especializo especialmente en la adaptacion de lentes tanto de contacto
+      como lentes multifocales. Evaluamos tu caso de forma personalizada para
+      ofrecerte la mejor solución visual. Diseñamos{" "}
+      <strong>lentes esclerales</strong>, <strong>RGP a medida</strong>. Así
+      como lentes <strong>Multifocales</strong> priorizando tu comodidad, salud
+      ocular y la claridad de tu visión. Agenda tu evaluación sin costo y da el
+      primer paso hacia una mejor calidad visual.
     </>
   ),
   bullets = [],
@@ -222,7 +225,7 @@ export default function SobreMi({
         </div>
 
         {/* ✅ Apartado informativo del contactólogo/optometrista */}
-        <div className="row align-items-center g-4 g-lg-5 mt-5">
+        <div className="row align-items-start g-4 g-lg-5 mt-5">
           <div className="col-lg-7">
             <h3
               className="fw-bold mb-3"
@@ -232,7 +235,7 @@ export default function SobreMi({
                 lineHeight: 1.15,
               }}
             >
-              Optometría clínica con tradición y tecnología
+              Optometría con tradición y tecnología
             </h3>
             <p
               className="mb-3"
@@ -241,12 +244,14 @@ export default function SobreMi({
                 fontSize: "clamp(16px, 1.4vw, 20px)",
               }}
             >
-              Con más de <strong>13 años</strong> de práctica y una herencia de{" "}
-              <strong>4 generaciones</strong> dedicadas a la óptica, evaluamos
-              tu salud visual con enfoque clínico y humano. Integramos{" "}
-              <strong>topografía corneal</strong>, adaptación de{" "}
+              Estudie en la universidad de.. Con más de <strong>13 años</strong>{" "}
+              de práctica y una herencia de <strong>4 generaciones</strong>{" "}
+              dedicadas a la óptica, evaluamos tu salud visual con enfoque
+              clínico y humano. Integramos la adaptación de{" "}
               <strong>lentes esclerales</strong> y <strong>RGP a medida</strong>{" "}
               para lograr la mejor agudeza visual y comodidad a largo plazo.
+              Ademas de entregar la mejor asesoria para mejorar la calidad
+              visual mediante lentes multifocales de última tecnologpia
             </p>
             <p
               className="mb-0"
@@ -261,40 +266,29 @@ export default function SobreMi({
             </p>
           </div>
 
-          {/* Imagen lateral del apartado (opcional) */}
+          {/* Imagen lateral del apartado */}
           <div className="col-lg-5">
             <div
               className="rounded-4 overflow-hidden"
               style={{
-                minHeight: 260,
-                height: "100%",
+                minHeight: 220, // 🔽 reducido de 260 a 220
+                height: "auto", // evita que se estire al 100%
                 border: `1px solid ${palette.border}`,
                 boxShadow: palette.shadow,
                 background: palette.white,
               }}
             >
-              {secondaryImage ? (
-                <img
-                  src={secondaryImage}
-                  alt={secondaryAlt}
-                  className="w-100 h-100"
-                  loading="lazy"
-                  style={{ objectFit: "cover", objectPosition: "50% 50%" }}
-                />
-              ) : (
-                // placeholder limpio si aún no defines la imagen
-                <div
-                  className="w-100 h-100 d-flex align-items-center justify-content-center"
-                  style={{
-                    color: palette.text,
-                    fontSize: 14,
-                    background:
-                      "linear-gradient(0deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6)), repeating-linear-gradient( 45deg, #faf7f2, #faf7f2 10px, #f2eee7 10px, #f2eee7 20px)",
-                  }}
-                >
-                  Espacio para imagen del área clínica / instrumental
-                </div>
-              )}
+              <img
+                src={imgs2} // 👉 cambia la ruta según tu imagen
+                alt="atención"
+                className="w-100"
+                loading="lazy"
+                style={{
+                  height: "600px", // 🔽 controla directamente el alto visible de la imagen
+                  objectFit: "cover",
+                  objectPosition: "50% 50%",
+                }}
+              />
             </div>
           </div>
         </div>

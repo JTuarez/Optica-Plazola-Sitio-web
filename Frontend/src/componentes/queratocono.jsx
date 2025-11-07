@@ -115,22 +115,20 @@ export default function QueratoCono() {
             <div className="p-4 bg-white rounded shadow-sm h-100 feature-box">
               <h5 className="fw-bold mb-2">Adaptación Experta</h5>
               <p className="mb-0">
-                Estudio topográfico y selección de diseños...
+                Adaptamos el mejor lente según cada paciente...
               </p>
             </div>
           </Col>
           <Col md={4}>
             <div className="p-4 bg-white rounded shadow-sm h-100 feature-box">
               <h5 className="fw-bold mb-2">Seguimiento Cercano</h5>
-              <p className="mb-0">Controles y educación del paciente...</p>
+              <p className="mb-0">Controles post entrega del lente..</p>
             </div>
           </Col>
           <Col md={4}>
             <div className="p-4 bg-white rounded shadow-sm h-100 feature-box">
               <h5 className="fw-bold mb-2">Tecnología & Calidad</h5>
-              <p className="mb-0">
-                Trabajamos con laboratorios y materiales...
-              </p>
+              <p className="mb-0">Material de última calidad...</p>
             </div>
           </Col>
         </Row>

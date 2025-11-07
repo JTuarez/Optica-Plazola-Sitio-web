@@ -67,7 +67,6 @@ export default function ReservasForm({ onCreated }) {
 
       // horario base del día
       const base = [
-        "10:00",
         "11:00",
         "12:00",
         "13:00",

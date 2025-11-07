@@ -35,9 +35,22 @@ function Footer() {
               Enlaces
             </h5>
             <p>
-              <a href="#servicios" className="text-white text-decoration-none">
-                Servicios
-              </a>
+              {/* 🔗 Enlace actualizado para ir al componente sobremidos.jsx */}
+              <Link
+                to="/multifocales"
+                className="text-white text-decoration-none"
+              >
+                Presbicia
+              </Link>
+            </p>
+            <p>
+              {/* 🔗 Enlace actualizado para ir al componente sobremidos.jsx */}
+              <Link
+                to="/queratocono"
+                className="text-white text-decoration-none"
+              >
+                Queratocono
+              </Link>
             </p>
             <p>
               {/* 🔗 Enlace actualizado para ir al componente sobremidos.jsx */}
