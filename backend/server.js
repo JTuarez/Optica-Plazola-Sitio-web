@@ -5,58 +5,55 @@ require("dotenv").config();
 
 const app = express();
 
-// 🔢 PORT (Render define process.env.PORT)
+// ✅ Puerto asignado por Render o 4000 local
 const PORT = process.env.PORT || 4000;
 
-// 🌍 CORS
-const allowFromEnv = process.env.ALLOW_ORIGIN || "*";
+// ✅ Configurar CORS correctamente para producción
+const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || "*";
 
-// Si quieres permitir varios (prod + local), usa un arreglo:
 const allowedOrigins = [
-  allowFromEnv,
-  "http://localhost:5173",
+  ALLOW_ORIGIN,
+  "http://localhost:5173", // para desarrollo local
   "http://localhost:3000",
 ].filter(Boolean);
 
-// Función para validar origen dinámicamente
 const corsOptions = {
   origin: function (origin, callback) {
-    // Requests sin origin (ej. curl, Postman) se permiten
+    // Permitir sin origin (ej: Postman o curl)
     if (!origin) return callback(null, true);
-    // Permite todos si es "*"
-    if (allowFromEnv === "*" || allowedOrigins.includes(origin)) {
+    if (ALLOW_ORIGIN === "*" || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-    return callback(new Error("Not allowed by CORS: " + origin), false);
+    console.warn("❌ Bloqueado por CORS:", origin);
+    return callback(new Error("Not allowed by CORS"), false);
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: false, // cámbialo a true sólo si usas cookies/sesiones cruzadas
 };
 
 app.use(cors(corsOptions));
-// Preflight para todos
+// Aceptar preflight OPTIONS
 app.options("*", cors(corsOptions));
 
-// 🧩 Middlewares
+// ✅ Middleware para JSON
 app.use(express.json());
 
-// 🩺 Healthcheck
+// ✅ Ruta de salud (Render la usa para verificar que el servidor está vivo)
 app.get("/api/health", (req, res) => {
-  res.json({ ok: true, origin: allowFromEnv });
+  res.json({ ok: true, origin: ALLOW_ORIGIN });
 });
 
-// 🔗 Rutas
+// ✅ Rutas reales de tu API
 app.use("/api/reservas", require("./routes/reservas"));
 app.use("/api/contacto", require("./routes/contacto"));
 
-// 🏠 Raíz
+// ✅ Ruta base
 app.get("/", (req, res) => {
   res.send("Servidor backend funcionando 🚀");
 });
 
-// ▶️ Start
+// ✅ Iniciar servidor
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-  console.log(`CORS allow origin: ${allowFromEnv}`);
+  console.log(`✅ Servidor corriendo en puerto ${PORT}`);
+  console.log(`🌐 CORS permitido desde: ${ALLOW_ORIGIN}`);
 });
