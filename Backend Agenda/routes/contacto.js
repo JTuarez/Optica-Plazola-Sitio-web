@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    // Transporter SMTP (Gmail u Outlook). Recomendado: Gmail con contraseña de aplicación
+    // Transporter SMTP (Gmail u Outlook).Gmail con contraseña de aplicación
     const transporter = nodemailer.createTransport({
       // Opción Gmail
       host: process.env.MAIL_HOST || "smtp.gmail.com",
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
         ? process.env.MAIL_SECURE === "true"
         : true,
       auth: {
-        user: process.env.EMAIL_USER, // tu correo emisor
+        user: process.env.EMAIL_USER, // mi correo emisor
         pass: process.env.EMAIL_PASS, // contraseña de aplicación o password SMTP
       },
     });
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
       `,
     });
 
-    // (Opcional) auto-respuesta al usuario
+    //  auto-respuesta al usuario
     if (process.env.SEND_AUTOREPLY === "true") {
       await transporter.sendMail({
         from: `"Óptica Plazola" <${

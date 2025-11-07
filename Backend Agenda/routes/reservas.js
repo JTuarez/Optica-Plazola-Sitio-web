@@ -116,7 +116,7 @@ router.post("/", async (req, res) => {
       `,
     });
 
-    // 📬 Correo al administrador (tú)
+    // 📬 Correo al administrador (yo)
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.ADMIN_EMAIL,
