@@ -152,6 +152,7 @@ router.post("/", async (req, res) => {
 
   // ---- Envío de correos (opcional) ----
   // ---- Envío de correos (opcional) ----
+  // ---- Envío de correos (vía Brevo) ----
   const SEND_MAIL =
     String(process.env.SEND_AUTOREPLY || "").toLowerCase() === "true";
 
@@ -168,55 +169,45 @@ router.post("/", async (req, res) => {
         });
     }
 
-    // Intento 1: 587 STARTTLS (preferido en Render)
-    let transporter;
-    try {
-      transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // STARTTLS
-        requireTLS: true,
-        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-        connectionTimeout: 20000,
-        socketTimeout: 20000,
-        pool: true,
-      });
-      await transporter.verify(); // fuerza handshake aquí
-      console.log("[MAIL] Transporte 587 OK");
-    } catch (e) {
-      console.warn("[MAIL] Falló 587, probando 465 SSL:", e.code || e.message);
-      transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true, // SSL
-        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-        connectionTimeout: 20000,
-        socketTimeout: 20000,
-        pool: true,
-      });
-      await transporter.verify();
-      console.log("[MAIL] Transporte 465 OK");
-    }
+    const transporter = nodemailer.createTransport({
+      host: process.env.BREVO_HOST || "smtp-relay.brevo.com",
+      port: Number(process.env.BREVO_PORT || 587),
+      secure: false,
+      auth: {
+        user: process.env.BREVO_USER,
+        pass: process.env.BREVO_PASS,
+      },
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 20000,
+      socketTimeout: 20000,
+    });
+
+    // Usa un remitente VERIFICADO en Brevo.
+    // Si ya verificaste el dominio opticaplazola.cl:
+    const FROM = '"Óptica Plazola" <no-reply@opticaplazola.cl>';
+    // Si aún no lo verificas, usa temporalmente el correo con el que creaste Brevo:
+    // const FROM = `"Óptica Plazola" <${process.env.BREVO_USER}>`;
 
     // Email al cliente
     await transporter.sendMail({
-      from: `"Fernando Plazola" <${process.env.EMAIL_USER}>`,
+      from: FROM,
       to: email,
-      subject: "✅ Confirmación de reserva - Fernando Plazola",
+      subject: "✅ Confirmación de reserva - Óptica Plazola",
       html: `<p>Hola <strong>${nombre_cliente}</strong>, tu reserva fue registrada para <strong>${fh}</strong>.</p>`,
     });
 
-    // Email al admin
+    // Email al administrador
     await transporter.sendMail({
-      from: `"Fernando Plazola" <${process.env.EMAIL_USER}>`,
+      from: FROM,
       to:
         process.env.ADMIN_EMAIL ||
         process.env.CONTACT_TO ||
-        process.env.EMAIL_USER,
+        process.env.BREVO_USER,
       subject: "🔔 Nueva reserva recibida",
       html: `<p>Cliente: <strong>${nombre_cliente}</strong> (${email})</p><p>Fecha y hora: <strong>${fh}</strong></p>`,
     });
 
+    console.log("📨 Correos enviados vía Brevo correctamente");
     return res
       .status(201)
       .json({
