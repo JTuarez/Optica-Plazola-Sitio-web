@@ -151,33 +151,52 @@ router.post("/", async (req, res) => {
   }
 
   // ---- Envío de correos (opcional) ----
+  // ---- Envío de correos (opcional) ----
   const SEND_MAIL =
     String(process.env.SEND_AUTOREPLY || "").toLowerCase() === "true";
 
   try {
-    // Si el envío está desactivado, termina aquí con éxito
     if (!SEND_MAIL) {
       console.log(
         "[RESERVA] envío de correo DESACTIVADO (SEND_AUTOREPLY!=true)"
       );
-      return res.status(201).json({
-        message: "Reserva creada ✅ (email desactivado)",
-        email_sent: false,
-      });
+      return res
+        .status(201)
+        .json({
+          message: "Reserva creada ✅ (email desactivado)",
+          email_sent: false,
+        });
     }
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true, // SSL
-      auth: {
-        user: process.env.EMAIL_USER, // optica.fp@gmail.com
-        pass: process.env.EMAIL_PASS, // app password
-      },
-      connectionTimeout: 20000,
-      socketTimeout: 20000,
-      pool: true,
-    });
+    // Intento 1: 587 STARTTLS (preferido en Render)
+    let transporter;
+    try {
+      transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, // STARTTLS
+        requireTLS: true,
+        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+        connectionTimeout: 20000,
+        socketTimeout: 20000,
+        pool: true,
+      });
+      await transporter.verify(); // fuerza handshake aquí
+      console.log("[MAIL] Transporte 587 OK");
+    } catch (e) {
+      console.warn("[MAIL] Falló 587, probando 465 SSL:", e.code || e.message);
+      transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true, // SSL
+        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+        connectionTimeout: 20000,
+        socketTimeout: 20000,
+        pool: true,
+      });
+      await transporter.verify();
+      console.log("[MAIL] Transporte 465 OK");
+    }
 
     // Email al cliente
     await transporter.sendMail({
@@ -198,13 +217,14 @@ router.post("/", async (req, res) => {
       html: `<p>Cliente: <strong>${nombre_cliente}</strong> (${email})</p><p>Fecha y hora: <strong>${fh}</strong></p>`,
     });
 
-    return res.status(201).json({
-      message: "Reserva creada y correos enviados ✅",
-      email_sent: true,
-    });
+    return res
+      .status(201)
+      .json({
+        message: "Reserva creada y correos enviados ✅",
+        email_sent: true,
+      });
   } catch (mailErr) {
     console.error("❌ Mail:", mailErr.code, mailErr.message);
-    // No falles la reserva por el correo
     return res.status(201).json({
       message: "Reserva creada, pero error al enviar correos",
       email_sent: false,
