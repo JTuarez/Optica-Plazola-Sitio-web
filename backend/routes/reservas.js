@@ -1,7 +1,7 @@
 // routes/reservas.js
 const router = require("express").Router();
 const pool = require("../db");
-const nodemailer = require("nodemailer");
+const axios = require("axios");
 
 // Normaliza a 'YYYY-MM-DD HH:mm:00' (sin segundos/milisegundos)
 const toSQLDateTime = (input) => {
@@ -20,7 +20,7 @@ const toSQLDateTime = (input) => {
 // Log para confirmar que el router se montó
 console.log("✅ Router /api/reservas montado");
 
-// --------- DIAGNÓSTICOS ---------
+/** --------- DIAGNÓSTICOS --------- */
 
 // GET /api/reservas/ping-db -> prueba conexión simple
 router.get("/ping-db", async (_req, res) => {
@@ -55,7 +55,7 @@ router.get("/diag", async (_req, res) => {
   }
 });
 
-// --------- ENDPOINTS REALES ---------
+/** --------- ENDPOINTS REALES --------- */
 
 // GET /api/reservas -> listado
 router.get("/", async (_req, res) => {
@@ -99,18 +99,20 @@ router.get("/disponibilidad", async (req, res) => {
   }
 });
 
-// POST /api/reservas -> crea reserva (+ emails si habilitado)
+// POST /api/reservas -> crea reserva + emails (Brevo API HTTP)
 router.post("/", async (req, res) => {
   const { nombre_cliente, email, fecha_hora } = req.body;
   if (!nombre_cliente || !email || !fecha_hora) {
     return res.status(400).json({ error: "Todos los campos son obligatorios" });
   }
 
-  // Normaliza la fecha para evitar falsos duplicados por segundos/ms o TZ
+  // ✅ Normaliza la fecha
   const fh = toSQLDateTime(fecha_hora);
-  if (!fh) return res.status(400).json({ error: "fecha_hora inválida" });
+  if (!fh) {
+    return res.status(400).json({ error: "fecha_hora inválida" });
+  }
 
-  // Verifica ocupación exacta ANTES de insertar
+  // 👀 Verifica ocupación exacta ANTES de insertar
   try {
     const [existe] = await pool.query(
       "SELECT id FROM reservas WHERE fecha_hora = ? LIMIT 1",
@@ -129,7 +131,7 @@ router.post("/", async (req, res) => {
       .json({ error: "Error verificando disponibilidad", code: e.code });
   }
 
-  // Inserta
+  // Inserta en BD
   try {
     await pool.query(
       "INSERT INTO reservas (nombre_cliente, email, fecha_hora) VALUES (?, ?, ?)",
@@ -150,64 +152,59 @@ router.post("/", async (req, res) => {
     });
   }
 
-  // ---- Envío de correos (opcional) ----
-  // ---- Envío de correos (opcional) ----
-  // ---- Envío de correos (vía Brevo) ----
+  // ─────────────────────────────────────────────────────────────
+  // 📧 Envío de correos por Brevo API HTTP (no SMTP)
+  // ─────────────────────────────────────────────────────────────
   const SEND_MAIL =
     String(process.env.SEND_AUTOREPLY || "").toLowerCase() === "true";
 
+  const apiKey = process.env.BREVO_API_KEY;
+  const senderEmail =
+    process.env.BREVO_SENDER || process.env.BREVO_USER || "no-reply@localhost";
+  const senderName = process.env.BREVO_SENDER_NAME || "Óptica Plazola";
+  const url = "https://api.brevo.com/v3/smtp/email";
+
+  const sendBrevo = async ({ to, subject, html }) => {
+    if (!apiKey) throw new Error("Falta BREVO_API_KEY");
+    return axios.post(
+      url,
+      {
+        sender: { email: senderEmail, name: senderName },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+      },
+      {
+        headers: { "api-key": apiKey, "Content-Type": "application/json" },
+        timeout: 15000,
+      }
+    );
+  };
+
   try {
     if (!SEND_MAIL) {
-      console.log(
-        "[RESERVA] envío de correo DESACTIVADO (SEND_AUTOREPLY!=true)"
-      );
-      return res
-        .status(201)
-        .json({
-          message: "Reserva creada ✅ (email desactivado)",
-          email_sent: false,
-        });
+      console.log("[RESERVA] envío de correo DESACTIVADO");
+      return res.status(201).json({
+        message: "Reserva creada ✅ (email desactivado)",
+        email_sent: false,
+      });
     }
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.BREVO_HOST || "smtp-relay.brevo.com",
-      port: Number(process.env.BREVO_PORT || 587),
-      secure: false,
-      auth: {
-        user: process.env.BREVO_USER,
-        pass: process.env.BREVO_PASS,
-      },
-      tls: { rejectUnauthorized: false },
-      connectionTimeout: 20000,
-      socketTimeout: 20000,
-    });
-
-    // Usa un remitente VERIFICADO en Brevo.
-    // Si ya verificaste el dominio opticaplazola.cl:
-    const FROM = '"Óptica Plazola" <no-reply@opticaplazola.cl>';
-    // Si aún no lo verificas, usa temporalmente el correo con el que creaste Brevo:
-    // const FROM = `"Óptica Plazola" <${process.env.BREVO_USER}>`;
-
     // Email al cliente
-    await transporter.sendMail({
-      from: FROM,
+    await sendBrevo({
       to: email,
       subject: "✅ Confirmación de reserva - Óptica Plazola",
       html: `<p>Hola <strong>${nombre_cliente}</strong>, tu reserva fue registrada para <strong>${fh}</strong>.</p>`,
     });
 
-    // Email al administrador
-    await transporter.sendMail({
-      from: FROM,
-      to:
-        process.env.ADMIN_EMAIL ||
-        process.env.CONTACT_TO ||
-        process.env.BREVO_USER,
+    // Email al admin
+    await sendBrevo({
+      to: process.env.ADMIN_EMAIL || process.env.CONTACT_TO || senderEmail,
       subject: "🔔 Nueva reserva recibida",
       html: `<p>Cliente: <strong>${nombre_cliente}</strong> (${email})</p><p>Fecha y hora: <strong>${fh}</strong></p>`,
     });
 
-    console.log("📨 Correos enviados vía Brevo correctamente");
+    console.log("📨 Correos enviados vía Brevo API correctamente");
     return res
       .status(201)
       .json({
@@ -215,11 +212,12 @@ router.post("/", async (req, res) => {
         email_sent: true,
       });
   } catch (mailErr) {
-    console.error("❌ Mail:", mailErr.code, mailErr.message);
+    console.error("❌ Mail(API):", mailErr.message || String(mailErr));
+    // No fallar la reserva por correo
     return res.status(201).json({
       message: "Reserva creada, pero error al enviar correos",
       email_sent: false,
-      mail_error: mailErr.code || mailErr.message,
+      mail_error: mailErr.message || String(mailErr),
     });
   }
 });
