@@ -119,12 +119,10 @@ router.post("/", async (req, res) => {
       [fh]
     );
     if (existe.length) {
-      return res
-        .status(409)
-        .json({
-          error: "Ese horario ya fue reservado. Elige otro.",
-          conflict_at: fh,
-        });
+      return res.status(409).json({
+        error: "Ese horario ya fue reservado. Elige otro.",
+        conflict_at: fh,
+      });
     }
   } catch (e) {
     console.error("❌ CHECK slot:", e.code, e.message);
@@ -140,12 +138,10 @@ router.post("/", async (req, res) => {
     );
   } catch (dbErr) {
     if (dbErr?.code === "ER_DUP_ENTRY") {
-      return res
-        .status(409)
-        .json({
-          error: "Ese horario ya fue reservado. Elige otro.",
-          conflict_at: fh,
-        });
+      return res.status(409).json({
+        error: "Ese horario ya fue reservado. Elige otro.",
+        conflict_at: fh,
+      });
     }
     console.error("❌ INSERT BD:", dbErr.code, dbErr.message);
     return res.status(500).json({
@@ -157,8 +153,15 @@ router.post("/", async (req, res) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // usa SSL
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      connectionTimeout: 20000, // 20s
+      socketTimeout: 20000, // 20s
     });
 
     await transporter.sendMail({
