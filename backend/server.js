@@ -5,10 +5,9 @@ require("dotenv").config();
 
 const app = express();
 
-// ✅ Puerto Render / local
-const PORT = process.env.PORT || 4000;
-
-// ✅ CORS
+// ==============================
+// 🔧 Configuración de CORS
+// ==============================
 const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || "*";
 const allowedOrigins = [
   ALLOW_ORIGIN,
@@ -18,7 +17,7 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin(origin, callback) {
-    if (!origin) return callback(null, true); // curl/Postman
+    if (!origin) return callback(null, true); // permite Postman / curl
     if (ALLOW_ORIGIN === "*" || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
@@ -30,25 +29,31 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// ❌ NO usar: app.options("*", cors(corsOptions)) en Express 5
-
 app.use(express.json());
 
-// Healthcheck
-app.get("/api/health", (req, res) => {
-  res.json({ ok: true, origin: ALLOW_ORIGIN });
-});
-
-// Rutas
+// ==============================
+// ✅ Rutas principales
+// ==============================
 app.use("/api/reservas", require("./routes/reservas"));
 app.use("/api/contacto", require("./routes/contacto"));
 
-// Root
-app.get("/", (req, res) => {
+// ==============================
+// 🩺 Healthcheck para Render
+// ==============================
+// Importante: no debe consultar la base de datos, solo responder rápido
+app.get("/api/health", (_req, res) => res.status(200).send("OK"));
+
+// ==============================
+// 🏠 Ruta raíz (prueba manual)
+// ==============================
+app.get("/", (_req, res) => {
   res.send("Servidor backend funcionando 🚀");
 });
 
-// Start
+// ==============================
+// 🚀 Iniciar servidor
+// ==============================
+const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Servidor corriendo en puerto ${PORT}`);
   console.log(`🌐 CORS permitido desde: ${ALLOW_ORIGIN}`);
