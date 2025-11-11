@@ -2,6 +2,7 @@
 const router = require("express").Router();
 const pool = require("../db");
 const nodemailer = require("nodemailer");
+
 // Normaliza a 'YYYY-MM-DD HH:mm:00' (sin segundos/milisegundos)
 const toSQLDateTime = (input) => {
   const d = new Date(input);
@@ -19,7 +20,7 @@ const toSQLDateTime = (input) => {
 // Log para confirmar que el router se montó
 console.log("✅ Router /api/reservas montado");
 
-/** --------- DIAGNÓSTICOS --------- */
+// --------- DIAGNÓSTICOS ---------
 
 // GET /api/reservas/ping-db -> prueba conexión simple
 router.get("/ping-db", async (_req, res) => {
@@ -54,7 +55,7 @@ router.get("/diag", async (_req, res) => {
   }
 });
 
-/** --------- ENDPOINTS REALES --------- */
+// --------- ENDPOINTS REALES ---------
 
 // GET /api/reservas -> listado
 router.get("/", async (_req, res) => {
@@ -98,21 +99,18 @@ router.get("/disponibilidad", async (req, res) => {
   }
 });
 
-// POST /api/reservas -> crea reserva + emails
-// POST /api/reservas -> crea reserva + emails
+// POST /api/reservas -> crea reserva (+ emails si habilitado)
 router.post("/", async (req, res) => {
   const { nombre_cliente, email, fecha_hora } = req.body;
   if (!nombre_cliente || !email || !fecha_hora) {
     return res.status(400).json({ error: "Todos los campos son obligatorios" });
   }
 
-  // ✅ Normaliza la fecha para evitar falsos duplicados por segundos/ms o TZ
+  // Normaliza la fecha para evitar falsos duplicados por segundos/ms o TZ
   const fh = toSQLDateTime(fecha_hora);
-  if (!fh) {
-    return res.status(400).json({ error: "fecha_hora inválida" });
-  }
+  if (!fh) return res.status(400).json({ error: "fecha_hora inválida" });
 
-  // 👀 Verifica ocupación exacta ANTES de insertar (más claro que depender del UNIQUE)
+  // Verifica ocupación exacta ANTES de insertar
   try {
     const [existe] = await pool.query(
       "SELECT id FROM reservas WHERE fecha_hora = ? LIMIT 1",
@@ -131,6 +129,7 @@ router.post("/", async (req, res) => {
       .json({ error: "Error verificando disponibilidad", code: e.code });
   }
 
+  // Inserta
   try {
     await pool.query(
       "INSERT INTO reservas (nombre_cliente, email, fecha_hora) VALUES (?, ?, ?)",
@@ -151,19 +150,36 @@ router.post("/", async (req, res) => {
     });
   }
 
+  // ---- Envío de correos (opcional) ----
+  const SEND_MAIL =
+    String(process.env.SEND_AUTOREPLY || "").toLowerCase() === "true";
+
   try {
+    // Si el envío está desactivado, termina aquí con éxito
+    if (!SEND_MAIL) {
+      console.log(
+        "[RESERVA] envío de correo DESACTIVADO (SEND_AUTOREPLY!=true)"
+      );
+      return res.status(201).json({
+        message: "Reserva creada ✅ (email desactivado)",
+        email_sent: false,
+      });
+    }
+
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // usa SSL
+      secure: true, // SSL
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER, // optica.fp@gmail.com
+        pass: process.env.EMAIL_PASS, // app password
       },
-      connectionTimeout: 20000, // 20s
-      socketTimeout: 20000, // 20s
+      connectionTimeout: 20000,
+      socketTimeout: 20000,
+      pool: true,
     });
 
+    // Email al cliente
     await transporter.sendMail({
       from: `"Fernando Plazola" <${process.env.EMAIL_USER}>`,
       to: email,
@@ -171,20 +187,27 @@ router.post("/", async (req, res) => {
       html: `<p>Hola <strong>${nombre_cliente}</strong>, tu reserva fue registrada para <strong>${fh}</strong>.</p>`,
     });
 
+    // Email al admin
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.ADMIN_EMAIL,
+      from: `"Fernando Plazola" <${process.env.EMAIL_USER}>`,
+      to:
+        process.env.ADMIN_EMAIL ||
+        process.env.CONTACT_TO ||
+        process.env.EMAIL_USER,
       subject: "🔔 Nueva reserva recibida",
-      html: `<p>Cliente: ${nombre_cliente} (${email})</p><p>Fecha y hora: ${fh}</p>`,
+      html: `<p>Cliente: <strong>${nombre_cliente}</strong> (${email})</p><p>Fecha y hora: <strong>${fh}</strong></p>`,
     });
 
-    return res
-      .status(201)
-      .json({ message: "Reserva creada y correos enviados ✅" });
+    return res.status(201).json({
+      message: "Reserva creada y correos enviados ✅",
+      email_sent: true,
+    });
   } catch (mailErr) {
     console.error("❌ Mail:", mailErr.code, mailErr.message);
+    // No falles la reserva por el correo
     return res.status(201).json({
       message: "Reserva creada, pero error al enviar correos",
+      email_sent: false,
       mail_error: mailErr.code || mailErr.message,
     });
   }
