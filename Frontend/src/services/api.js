@@ -3,7 +3,7 @@ import axios from "axios";
 // ✅ Usa la URL de Render directamente o desde entorno local si estás en desarrollo
 const fromEnv =
   import.meta.env.VITE_API_URL ||
-  "https://optica-plazola-sitio-web.onrender.com"; // tu backend en Render
+  "https://optica-plazola-sitio-web.onrender.com"; // backend en Render
 
 // 🔧 Limpieza de URL por si alguien deja "/" o "/api" al final
 const normalized = fromEnv.replace(/\/+$/, "").replace(/\/api$/, "");
