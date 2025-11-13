@@ -244,14 +244,15 @@ export default function SobreMi({
                 fontSize: "clamp(16px, 1.4vw, 20px)",
               }}
             >
-              Estudie en la universidad de.. Con más de <strong>13 años</strong>{" "}
-              de práctica y una herencia de <strong>4 generaciones</strong>{" "}
-              dedicadas a la óptica, evaluamos tu salud visual con enfoque
-              clínico y humano. Integramos la adaptación de{" "}
-              <strong>lentes esclerales</strong> y <strong>RGP a medida</strong>{" "}
-              para lograr la mejor agudeza visual y comodidad a largo plazo.
-              Ademas de entregar la mejor asesoria para mejorar la calidad
-              visual mediante lentes multifocales de última tecnologpia
+              Estudie en la universidad de en Caracas Venuezuela.. Con más de{" "}
+              <strong>13 años</strong> de práctica y una herencia de{" "}
+              <strong>4 generaciones</strong> dedicadas a la óptica, evaluamos
+              tu salud visual con enfoque clínico y humano. Integramos la
+              adaptación de <strong>lentes esclerales</strong> y{" "}
+              <strong>RGP a medida</strong> para lograr la mejor agudeza visual
+              y comodidad a largo plazo. Ademas de entregar la mejor asesoria
+              para mejorar la calidad visual mediante lentes multifocales de
+              última tecnologpia
             </p>
             <p
               className="mb-0"

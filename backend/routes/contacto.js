@@ -1,10 +1,15 @@
-/// routes/contacto.js
+// routes/contacto.js
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 
 router.post("/", async (req, res) => {
   const { nombre, correo, mensaje } = req.body || {};
+  console.log("📨 /api/contacto payload:", {
+    nombre,
+    correo,
+    len: mensaje?.length,
+  });
 
   if (!nombre?.trim() || !correo?.trim() || !mensaje?.trim()) {
     return res.status(400).json({ error: "Campos incompletos" });
@@ -12,22 +17,23 @@ router.post("/", async (req, res) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST, // Brevo
-      port: Number(process.env.MAIL_PORT || 587),
-      secure: String(process.env.MAIL_SECURE) === "true", // false para 587 (STARTTLS)
+      host: process.env.MAIL_HOST, // smtp-relay.brevo.com
+      port: Number(process.env.MAIL_PORT || 587), // 587
+      secure: String(process.env.MAIL_SECURE) === "true", // false
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER, // optica.fp@gmail.com
+        pass: process.env.EMAIL_PASS, // xsmtpsib-...
       },
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 10000, // 10s
+      greetingTimeout: 10000,
+      socketTimeout: 20000, // 20s
     });
-
-    // opcional: validar conexión SMTP
-    await transporter.verify();
 
     const fromAddress =
       process.env.MAIL_FROM || `Óptica Plazola <${process.env.EMAIL_USER}>`;
 
-    // Email para ti
+    // 1) Email para ti
     await transporter.sendMail({
       from: fromAddress,
       to: process.env.CONTACT_TO || process.env.EMAIL_USER,
@@ -44,6 +50,7 @@ router.post("/", async (req, res) => {
       `,
     });
 
+    // 2) Auto-respuesta al usuario
     if (process.env.SEND_AUTOREPLY === "true") {
       await transporter.sendMail({
         from: fromAddress,
@@ -56,10 +63,15 @@ router.post("/", async (req, res) => {
       });
     }
 
+    console.log("✅ /api/contacto enviado OK");
     return res.json({ ok: true });
   } catch (err) {
-    console.error("❌ Error al enviar contacto:", err?.message, err);
-    return res.status(500).json({ error: "No se pudo enviar el mensaje" });
+    console.error("❌ /api/contacto error:", err?.code, err?.message);
+    return res.status(500).json({
+      error: "No se pudo enviar el mensaje",
+      code: err?.code || "SMTP_ERROR",
+      msg: err?.message,
+    });
   }
 });
 

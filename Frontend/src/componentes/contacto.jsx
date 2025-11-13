@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { enviarContacto, API_URL } from "../services/api"; // 👈 usa tu api.js
 
 export default function Contacto() {
   const [form, setForm] = useState({ nombre: "", correo: "", mensaje: "" });
@@ -14,8 +15,7 @@ export default function Contacto() {
     if (!form.nombre.trim()) return "Ingresa tu nombre.";
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.correo);
     if (!emailOk) return "Ingresa un correo válido.";
-    if (form.mensaje.trim().length < 10)
-      return "Cuéntanos un poco más en tu mensaje (mín. 10 caracteres).";
+    if (form.mensaje.trim().length < 10) return "Mínimo 10 caracteres.";
     return null;
   };
 
@@ -26,18 +26,16 @@ export default function Contacto() {
 
     setLoading(true);
     try {
-      // Ajusta la URL a tu backend real:
-      const res = await fetch("/api/contacto", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error("No se pudo enviar el mensaje.");
-      toast.success("¡Mensaje enviado! Te responderemos pronto.");
-      setForm({ nombre: "", correo: "", mensaje: "" });
+      console.log("[Contacto] usando API:", API_URL); // debe mostrar Render
+      const { data } = await enviarContacto(form); // 👈 AHORA SÍ
+      if (data?.ok) {
+        toast.success("¡Mensaje enviado! Te responderemos pronto.");
+        setForm({ nombre: "", correo: "", mensaje: "" });
+      } else {
+        toast.error("No se pudo enviar el mensaje.");
+      }
     } catch (err) {
-      toast.error(err.message || "Ocurrió un error al enviar el mensaje.");
+      toast.error(err?.message || "Ocurrió un error al enviar el mensaje.");
     } finally {
       setLoading(false);
     }
@@ -47,7 +45,6 @@ export default function Contacto() {
     <section className="contacto-hero py-5">
       <div className="container">
         <div className="row g-4 align-items-stretch">
-          {/* Lado izquierdo: título y texto */}
           <div className="col-lg-5">
             <div className="contacto-panel h-100 p-4 p-md-5">
               <h2 className="contacto-title mb-3">Hablemos de tu visión</h2>
@@ -56,30 +53,26 @@ export default function Contacto() {
                 multifocales? Escríbenos y te ayudaremos a encontrar la mejor
                 solución para tus ojos.
               </p>
-
               <ul className="list-unstyled contacto-datos">
                 <li className="mb-3">
-                  <i className="bi bi-geo-alt-fill me-2"></i>
-                  Nueva Providencia 1881, oficina 2109.
+                  <i className="bi bi-geo-alt-fill me-2"></i>Nueva Providencia
+                  1881, oficina 2109.
                 </li>
                 <li className="mb-3">
                   <i className="bi bi-envelope-fill me-2"></i>
                   contacto@opticafp.cl
                 </li>
                 <li>
-                  <i className="bi bi-telephone-fill me-2"></i>
-                  +56 9 2021 1535
+                  <i className="bi bi-telephone-fill me-2"></i>+56 9 2021 1535
                 </li>
               </ul>
             </div>
           </div>
 
-          {/* Lado derecho: formulario */}
           <div className="col-lg-7">
             <div className="contacto-card h-100 p-4 p-md-5">
               <h3 className="mb-4">Formulario de contacto</h3>
               <form onSubmit={onSubmit} noValidate>
-                {/* Nombre */}
                 <div className="form-floating mb-3">
                   <input
                     type="text"
@@ -94,7 +87,6 @@ export default function Contacto() {
                   <label htmlFor="nombre">Nombre</label>
                 </div>
 
-                {/* Correo */}
                 <div className="form-floating mb-3">
                   <input
                     type="email"
@@ -109,7 +101,6 @@ export default function Contacto() {
                   <label htmlFor="correo">Correo</label>
                 </div>
 
-                {/* Mensaje */}
                 <div className="form-floating mb-4">
                   <textarea
                     className="form-control contacto-input"
@@ -120,7 +111,7 @@ export default function Contacto() {
                     value={form.mensaje}
                     onChange={onChange}
                     disabled={loading}
-                  ></textarea>
+                  />
                   <label htmlFor="mensaje">Mensaje</label>
                 </div>
 

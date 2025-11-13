@@ -1,12 +1,18 @@
+// src/services/api.js
 import axios from "axios";
 
-// ✅ Usa la URL de Render directamente o desde entorno local si estás en desarrollo
+// ✅ URL del backend (Render) o desde variable de entorno
 const fromEnv =
   import.meta.env.VITE_API_URL ||
-  "https://optica-plazola-sitio-web.onrender.com"; // backend en Render
+  "https://optica-plazola-sitio-web.onrender.com";
 
-// 🔧 Limpieza de URL por si alguien deja "/" o "/api" al final
+// 🔧 Limpieza por si alguien deja "/" o "/api" al final
 const normalized = fromEnv.replace(/\/+$/, "").replace(/\/api$/, "");
+
+// 👀 Útil para depurar en producción (lo ves en F12 > Consola)
+if (typeof window !== "undefined") {
+  console.log("[API] BaseURL:", `${normalized}/api`);
+}
 
 // 🚀 Instancia principal de Axios
 const api = axios.create({
@@ -33,7 +39,7 @@ api.interceptors.response.use(
 
       // “Despierta” Render haciendo un ping
       try {
-        await fetch(`${normalized}/api/diag`, { cache: "no-store" });
+        await fetch(`${normalized}/api/health`, { cache: "no-store" });
       } catch {}
 
       // Espera breve y reintenta
@@ -48,14 +54,8 @@ api.interceptors.response.use(
 // ========================
 // 🧾 Endpoints de reservas
 // ========================
-
-// Obtener todas las reservas
 export const getReservas = () => api.get("/reservas");
-
-// Crear una nueva reserva
 export const createReserva = (payload) => api.post("/reservas", payload);
-
-// Obtener disponibilidad por fecha
 export const getDisponibilidad = (fecha) =>
   api.get("/reservas/disponibilidad", { params: { date: fecha } });
 
