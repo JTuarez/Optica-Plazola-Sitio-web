@@ -2,9 +2,6 @@
 const express = require("express");
 const router = express.Router();
 
-// Node 18+ tiene fetch global; si no, habría que instalar node-fetch
-// pero en Render por defecto sí lo tiene.
-
 router.post("/", async (req, res) => {
   const { nombre, correo, mensaje } = req.body || {};
   console.log("📨 /api/contacto payload:", {
@@ -45,7 +42,7 @@ router.post("/", async (req, res) => {
   };
 
   try {
-    // 1) Email para ti (Óptica)
+    // 1) Email para (Óptica)
     const adminResp = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {

@@ -106,13 +106,13 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Todos los campos son obligatorios" });
   }
 
-  // ✅ Normaliza la fecha
+  //  Normaliza la fecha
   const fh = toSQLDateTime(fecha_hora);
   if (!fh) {
     return res.status(400).json({ error: "fecha_hora inválida" });
   }
 
-  // 👀 Verifica ocupación exacta ANTES de insertar
+  //  Verifica ocupación exacta ANTES de insertar
   try {
     const [existe] = await pool.query(
       "SELECT id FROM reservas WHERE fecha_hora = ? LIMIT 1",
@@ -153,7 +153,7 @@ router.post("/", async (req, res) => {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // 📧 Envío de correos por Brevo API HTTP (no SMTP)
+  // Envío de correos por Brevo API HTTP (no SMTP)
   // ─────────────────────────────────────────────────────────────
   const SEND_MAIL =
     String(process.env.SEND_AUTOREPLY || "").toLowerCase() === "true";
@@ -205,12 +205,10 @@ router.post("/", async (req, res) => {
     });
 
     console.log("📨 Correos enviados vía Brevo API correctamente");
-    return res
-      .status(201)
-      .json({
-        message: "Reserva creada y correos enviados ✅",
-        email_sent: true,
-      });
+    return res.status(201).json({
+      message: "Reserva creada y correos enviados ✅",
+      email_sent: true,
+    });
   } catch (mailErr) {
     console.error("❌ Mail(API):", mailErr.message || String(mailErr));
     // No fallar la reserva por correo
