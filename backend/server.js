@@ -13,6 +13,9 @@ const allowedOrigins = [
   ALLOW_ORIGIN,
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://opticafp.cl",
+  "https://www.opticafp.cl",
+  "https://skyblue-sparrow-494774.hostingersite.com",
 ].filter(Boolean);
 
 const corsOptions = {
