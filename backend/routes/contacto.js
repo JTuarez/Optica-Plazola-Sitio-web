@@ -106,7 +106,7 @@ router.post("/", async (req, res) => {
           subject: "Hemos recibido tu mensaje ✅",
           htmlContent: `
             <p>Hola ${nombre}, gracias por escribirnos. Hemos recibido tu mensaje y te responderemos pronto.</p>
-            <p>— Equipo Óptica Plazola</p>
+            <p>—Fernando Plazola</p>
           `,
         }),
       });
