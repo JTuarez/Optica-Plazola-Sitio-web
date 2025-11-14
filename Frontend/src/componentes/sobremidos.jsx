@@ -141,7 +141,7 @@ export default function SobreMi({
               Atención personalizada
             </span>
 
-            {/* ✅ Títulos más grandes y legibles */}
+            {/*  Títulos más grandes y legibles */}
             <h2
               className="fw-bold mb-3"
               style={{
@@ -224,7 +224,7 @@ export default function SobreMi({
           </div>
         </div>
 
-        {/* ✅ Apartado informativo del contactólogo/optometrista */}
+        {/*  Apartado informativo del contactólogo/optometrista */}
         <div className="row align-items-start g-4 g-lg-5 mt-5">
           <div className="col-lg-7">
             <h3
@@ -244,11 +244,11 @@ export default function SobreMi({
                 fontSize: "clamp(16px, 1.4vw, 20px)",
               }}
             >
-              Estudie en la universidad de en Caracas Venuezuela.. Con más de{" "}
-              <strong>13 años</strong> de práctica y una herencia de{" "}
-              <strong>4 generaciones</strong> dedicadas a la óptica, evaluamos
-              tu salud visual con enfoque clínico y humano. Integramos la
-              adaptación de <strong>lentes esclerales</strong> y{" "}
+              Estudie en la universidad de en Caracas Venuezuela con más de{" "}
+              <strong>13 años</strong> de experiencia y ademas una herencia
+              familiar de <strong>4 generaciones</strong> dedicadas a la óptica,
+              evaluamos tu salud visual con enfoque clínico y humano. Integramos
+              la adaptación de <strong>lentes esclerales</strong> y{" "}
               <strong>RGP a medida</strong> para lograr la mejor agudeza visual
               y comodidad a largo plazo. Ademas de entregar la mejor asesoria
               para mejorar la calidad visual mediante lentes multifocales de

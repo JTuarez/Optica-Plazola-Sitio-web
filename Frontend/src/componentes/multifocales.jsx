@@ -115,10 +115,10 @@ export default function Multifocales() {
           </Col>
         </Row>
 
-        {/* Por qué elegir Óptica Plazola */}
+        {/* Por qué elegir Fernando Plazola */}
         <Row className="mb-4 text-center">
           <Col>
-            <h2 className="fw-bold">¿Por qué elegir Óptica Plazola?</h2>
+            <h2 className="fw-bold">¿Por qué elegir Fernnado Plazola?</h2>
           </Col>
         </Row>
         <Row className="g-4 mb-5">
