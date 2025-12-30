@@ -10,12 +10,12 @@ function Navbar() {
       style={{ backgroundColor: "#F9F6EF" }}
     >
       <div className="container">
-        {/* 🔹 Logo */}
+        {/*  Logo */}
         <Link className="navbar-brand" to="/">
           <img src={logofp2} alt="Fernando-Plazola" height="70" />
         </Link>
 
-        {/* 🔹 Botón responsive */}
+        {/*  Botón responsive */}
         <button
           className="navbar-toggler"
           type="button"
@@ -28,7 +28,7 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* 🔹 Menú principal */}
+        {/*  Menú principal */}
         <div
           className="collapse navbar-collapse justify-content-end"
           id="navbarNav"
@@ -46,7 +46,7 @@ function Navbar() {
               </Link>
             </li>
 
-            {/* 🔽 Dropdown Lentes con hover */}
+            {/*  Dropdown Lentes con hover */}
             <li className="nav-item dropdown dropdown-hover">
               <a
                 className="nav-link dropdown-toggle"

@@ -13,7 +13,7 @@ function Carousel() {
       style={{ height: "60vh" }}
     >
       <div className="carousel-inner" style={{ height: "100%" }}>
-        {/* 🔹 Primer banner con texto */}
+        {/*  Primer banner con texto */}
         <div
           className="carousel-item active position-relative"
           style={{ height: "100%" }}
@@ -28,23 +28,23 @@ function Carousel() {
           </div>
         </div>
 
-        {/* 🔹 Segundo banner sin texto */}
+        {/*  Segundo banner sin texto */}
         <div className="carousel-item" style={{ height: "100%" }}>
           <img src={img2} className="d-block w-100 banner-img" alt="Banner 2" />
         </div>
 
-        {/* 🔹 Tercer banner sin texto */}
+        {/*  Tercer banner sin texto */}
         <div className="carousel-item" style={{ height: "100%" }}>
           <img src={img3} className="d-block w-100 banner-img" alt="Banner 3" />
         </div>
 
-        {/* 🔹 Botón Contactar */}
+        {/*  Botón Contactar */}
         <Link to="/agendar" className="btn-contactar">
           <span>Agendar sesión sin costo</span>
         </Link>
       </div>
 
-      {/* 🔹 Flechas */}
+      {/*  Flechas */}
       <button
         className="carousel-control-prev"
         type="button"

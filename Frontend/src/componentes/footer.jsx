@@ -35,7 +35,7 @@ function Footer() {
               Enlaces
             </h5>
             <p>
-              {/* 🔗 Enlace actualizado para ir al componente sobremidos.jsx */}
+              {/*  Enlace actualizado para ir al componente sobremidos.jsx */}
               <Link
                 to="/multifocales"
                 className="text-white text-decoration-none"
@@ -44,7 +44,7 @@ function Footer() {
               </Link>
             </p>
             <p>
-              {/* 🔗 Enlace actualizado para ir al componente sobremidos.jsx */}
+              {/*  Enlace actualizado para ir al componente sobremidos.jsx */}
               <Link
                 to="/queratocono"
                 className="text-white text-decoration-none"
@@ -53,7 +53,7 @@ function Footer() {
               </Link>
             </p>
             <p>
-              {/* 🔗 Enlace actualizado para ir al componente sobremidos.jsx */}
+              {/*  Enlace actualizado para ir al componente sobremidos.jsx */}
               <Link
                 to="/sobremidos"
                 className="text-white text-decoration-none"
@@ -153,12 +153,12 @@ function Footer() {
             © 2025 Óptica Plazola | Todos los derechos reservados | Desarrollado
             por{" "}
             <a
-              href="https://www.smeiby.com"
+              href="https://jordytuarez.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white text-decoration-underline"
             >
-              Smeiby
+              Jordy Tuarez
             </a>
           </p>
         </div>

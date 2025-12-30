@@ -1,9 +1,9 @@
-/* 🌐 Scroll suave para toda la página */
+/*  Scroll suave para toda la página */
 html {
   scroll-behavior: smooth;
 }
 
-/* 🔄 Transiciones suaves para enlaces, botones e imágenes */
+/*  Transiciones suaves para enlaces, botones e imágenes */
 a,
 button,
 .nav-link,
@@ -12,13 +12,27 @@ img {
   transition: all 0.3s ease-in-out;
 }
 
-/* ✨ Transición general de secciones (fade-in suave) */
+/*  Transición general de secciones (fade-in suave) */
 section,
 main,
 div[class*="container"],
 .row {
   animation: fadeInUp 1s ease forwards;
   opacity: 0;
+}
+
+:root {
+  --brand-bg: #f5f1eb; /* beige claro */
+  --brand-navy: #0b2e4d; /* azul marino */
+  --brand-gold: #d6b77a; /* dorado suave */
+  --brand-white: #ffffff;
+  --ink-700: #444444; /* texto principal */
+  --ink-500: #6b6b6b; /* texto secundario */
+
+  --plazola-turquesa: #b47e36;
+  --plazola-azul: #b47e36;
+  --plazola-azul-20: rgba(13, 27, 42, 0.08);
+  --plazola-rosado: #c57b6a;
 }
 
 /* 🎬 Animación: aparición suave y desplazamiento ligero hacia arriba */
@@ -218,16 +232,6 @@ div[class*="container"],
   }
 }
 
-:root {
-  --brand-gold: #d6b77a;
-  --brand-gold-20: rgba(214, 183, 122, 0.2);
-  --brand-navy: #0b2e4d;
-  --brand-bg: #faf8f5;
-  --ink-700: #444;
-  --ink-500: #6b6b6b;
-  --turquesa: #12c0c7;
-}
-
 /* ====== Base de la card de servicios ====== */
 .service-card {
   position: relative;
@@ -376,13 +380,6 @@ div[class*="container"],
   }
 }
 
-:root {
-  --plazola-turquesa: #12c0c7;
-  --plazola-azul: #b47e36;
-  --plazola-azul-20: rgba(13, 27, 42, 0.08);
-  --plazola-rosado: #c57b6a;
-}
-
 .booking-hero {
   background: linear-gradient(var(--plazola-azul));
   color: #fff;
@@ -477,15 +474,18 @@ div[class*="container"],
   padding: 0.25rem 0.5rem;
   font-size: 0.85rem;
 }
+button.btn-plazola,
+.btn-plazola.btn,
 .btn-plazola {
-  background: var(--plazola-turquesa);
+  background-color: #b97d3e;
+  color: #fff;
   border: none;
-  color: #013b48;
-  font-weight: 700;
-  letter-spacing: 0.2px;
 }
+
+button.btn-plazola:hover,
+.btn-plazola.btn:hover,
 .btn-plazola:hover {
-  filter: brightness(0.95);
+  background-color: #644f3d; /* hover */
 }
 
 .hero-agenda {
@@ -578,10 +578,6 @@ div[class*="container"],
   text-decoration: none;
   color: black;
   font-weight: 500;
-}
-:root {
-  --gold: #cfa24a;
-  --gold-hover: #b98933;
 }
 
 .btn-gold {
@@ -694,15 +690,6 @@ div[class*="container"],
 /* Etiquetas flotantes más elegantes */
 .form-floating > label {
   color: #8b877f;
-}
-
-:root {
-  --brand-bg: #f5f1eb; /* beige claro */
-  --brand-navy: #0b2e4d; /* azul marino */
-  --brand-gold: #d6b77a; /* dorado suave */
-  --brand-white: #ffffff;
-  --ink-700: #444444; /* texto principal */
-  --ink-500: #6b6b6b; /* texto secundario */
 }
 
 /* Fondo general con textura suave y profundidad */

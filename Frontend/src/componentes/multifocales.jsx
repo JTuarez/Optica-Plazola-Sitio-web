@@ -22,7 +22,7 @@ export default function Multifocales() {
           </Col>
         </Row>
 
-        {/* ¿Qué son los multifocales? + Imagen */}
+        {/* Qué son los multifocales + Imagen */}
         <div className="querato-box my-5 py-4 px-5 rounded-4 shadow-lg">
           <Row className="align-items-center g-1">
             <Col md={6}>

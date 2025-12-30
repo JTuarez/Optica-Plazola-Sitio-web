@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import imgs from "../assets/img/sobre_mi.jpg";
 import imgs2 from "../assets/img/atencion.jpg";
 
-// ✅ Puedes pasar una imagen secundaria por props si quieres
-//    <SobreMi secondaryImage={otraImg} />
 export default function SobreMi({
   title = "Evaluación con nuestro especialista",
   subtitle = "Fernando Plazola · Optómetra especializado",
@@ -27,9 +25,6 @@ export default function SobreMi({
   onPrimaryCtaText = "Agendar Evaluación",
   onSecondaryCtaHref = "",
   onSecondaryCtaText = "",
-  // nuevos (opcionales)
-  secondaryImage,
-  secondaryAlt = "Atención optométrica",
 }) {
   const palette = {
     cream: "#FBF7F2",
@@ -203,7 +198,7 @@ export default function SobreMi({
                   </a>
                 ))}
 
-              {/* Botón secundario (opcional) */}
+              {/* Botón secundario */}
               {onSecondaryCtaHref &&
                 (onSecondaryCtaHref.startsWith("/") ? (
                   <Link
@@ -272,7 +267,7 @@ export default function SobreMi({
             <div
               className="rounded-4 overflow-hidden"
               style={{
-                minHeight: 220, // 🔽 reducido de 260 a 220
+                minHeight: 220,
                 height: "auto", // evita que se estire al 100%
                 border: `1px solid ${palette.border}`,
                 boxShadow: palette.shadow,
@@ -280,7 +275,7 @@ export default function SobreMi({
               }}
             >
               <img
-                src={imgs2} // 👉 cambia la ruta según tu imagen
+                src={imgs2}
                 alt="atención"
                 className="w-100"
                 loading="lazy"
