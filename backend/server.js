@@ -1,4 +1,7 @@
 // server.js
+console.log("CONTACT_TO is:", process.env.CONTACT_TO);
+console.log("BREVO_SENDER is:", process.env.BREVO_SENDER);
+console.log("BREVO_USER is:", process.env.BREVO_USER);
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
