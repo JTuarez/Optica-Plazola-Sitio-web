@@ -176,9 +176,9 @@ router.post("/", async (req, res) => {
         sender: { email: senderEmail, name: senderName },
         to: [{ email: email }],
         bcc: [{ email: process.env.ADMIN_EMAIL }],
-        subject: "✅ Confirmación de reserva - Óptica Plazola",
+        subject: "🔔 Confirmación de reserva - Óptica Plazola",
         htmlContent: `
-          <p>Hola <strong>${nombre_cliente}</strong>, tu reserva fue registrada para <strong>${fh}</strong>.</p>
+          <p>Nueva reserva recibida de <strong>${nombre_cliente}</strong>.</p>
           <hr>
           <p><strong>Detalle interno:</strong></p>
           <p>Cliente: ${nombre_cliente} (${email})</p>
