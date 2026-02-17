@@ -39,7 +39,7 @@ router.get("/ping-db", async (_req, res) => {
 router.get("/diag", async (_req, res) => {
   try {
     const [u] = await pool.query(
-      "SELECT CURRENT_USER() AS user, DATABASE() AS db"
+      "SELECT CURRENT_USER() AS user, DATABASE() AS db",
     );
     const [t] = await pool.query("SHOW TABLES LIKE 'reservas'");
     return res.json({
@@ -61,7 +61,7 @@ router.get("/diag", async (_req, res) => {
 router.get("/", async (_req, res) => {
   try {
     const [rows] = await pool.query(
-      "SELECT id, nombre_cliente, email, fecha_hora FROM reservas ORDER BY fecha_hora DESC"
+      "SELECT id, nombre_cliente, email, fecha_hora FROM reservas ORDER BY fecha_hora DESC",
     );
     return res.json(rows);
   } catch (e) {
@@ -85,7 +85,7 @@ router.get("/disponibilidad", async (req, res) => {
   try {
     const [rows] = await pool.query(
       "SELECT DATE_FORMAT(fecha_hora, '%H:%i') AS hora FROM reservas WHERE DATE(fecha_hora) = ?",
-      [date]
+      [date],
     );
     const horasOcupadas = rows.map((r) => r.hora);
     return res.json(horasOcupadas);
@@ -116,7 +116,7 @@ router.post("/", async (req, res) => {
   try {
     const [existe] = await pool.query(
       "SELECT id FROM reservas WHERE fecha_hora = ? LIMIT 1",
-      [fh]
+      [fh],
     );
     if (existe.length) {
       return res.status(409).json({
@@ -135,7 +135,7 @@ router.post("/", async (req, res) => {
   try {
     await pool.query(
       "INSERT INTO reservas (nombre_cliente, email, fecha_hora) VALUES (?, ?, ?)",
-      [nombre_cliente, email, fh]
+      [nombre_cliente, email, fh],
     );
   } catch (dbErr) {
     if (dbErr?.code === "ER_DUP_ENTRY") {
@@ -177,7 +177,7 @@ router.post("/", async (req, res) => {
       {
         headers: { "api-key": apiKey, "Content-Type": "application/json" },
         timeout: 15000,
-      }
+      },
     );
   };
 
@@ -210,7 +210,11 @@ router.post("/", async (req, res) => {
       email_sent: true,
     });
   } catch (mailErr) {
-    console.error("❌ Mail(API):", mailErr.message || String(mailErr));
+    console.error(
+      "❌ Mail(API):",
+      mailErr.response?.data || mailErr.message || String(mailErr),
+    );
+
     // No fallar la reserva por correo
     return res.status(201).json({
       message: "Reserva creada, pero error al enviar correos",
