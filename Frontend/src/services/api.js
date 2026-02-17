@@ -1,20 +1,20 @@
 // src/services/api.js
 import axios from "axios";
 
-// ✅ URL del backend (Render) o desde variable de entorno
+//  URL del backend (Render) o desde variable de entorno
 const fromEnv =
   import.meta.env.VITE_API_URL ||
   "https://optica-plazola-sitio-web.onrender.com";
 
-// 🔧 Limpieza por si alguien deja "/" o "/api" al final
+//  Limpieza por si alguien deja "/" o "/api" al final
 const normalized = fromEnv.replace(/\/+$/, "").replace(/\/api$/, "");
 
-// 👀 Útil para depurar en producción (lo ves en F12 > Consola)
+// Útil para depurar en producción
 if (typeof window !== "undefined") {
   console.log("[API] BaseURL:", `${normalized}/api`);
 }
 
-// 🚀 Instancia principal de Axios
+//  Instancia principal de Axios
 const api = axios.create({
   baseURL: `${normalized}/api`,
   headers: { "Content-Type": "application/json" },
@@ -22,7 +22,7 @@ const api = axios.create({
 });
 
 // ===================================================
-// 🧠 INTERCEPTOR: Reintento automático si Render “duerme”
+//  INTERCEPTOR: Reintento automático si Render “duerme”
 // ===================================================
 api.interceptors.response.use(
   (res) => res,
@@ -34,7 +34,7 @@ api.interceptors.response.use(
       !error.config.__retried;
 
     if (shouldRetry) {
-      console.warn("🔁 Reintentando conexión con backend...");
+      console.warn(" Reintentando conexión con backend...");
       error.config.__retried = true;
 
       // “Despierta” Render haciendo un ping
@@ -52,7 +52,7 @@ api.interceptors.response.use(
 );
 
 // ========================
-// 🧾 Endpoints de reservas
+//  Endpoints de reservas
 // ========================
 export const getReservas = () => api.get("/reservas");
 export const createReserva = (payload) => api.post("/reservas", payload);
@@ -60,7 +60,7 @@ export const getDisponibilidad = (fecha) =>
   api.get("/reservas/disponibilidad", { params: { date: fecha } });
 
 // ========================
-// 📩 Endpoint de contacto
+//  Endpoint de contacto
 // ========================
 export const enviarContacto = (payload) => api.post("/contacto", payload);
 

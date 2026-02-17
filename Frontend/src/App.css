@@ -56,7 +56,9 @@ div[class*="container"],
 /* 🧭 Suaviza las transiciones de navegación del navbar */
 .navbar,
 .navbar a {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Alto fijo del banner, responsivo */
@@ -93,7 +95,9 @@ div[class*="container"],
   margin-top: 0;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 140ms ease, transform 140ms ease;
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
   pointer-events: none; /* evita flicker al salir/entrar */
   z-index: 1050;
 }
@@ -120,7 +124,9 @@ div[class*="container"],
   font-size: 1rem;
   padding: 0.6rem 0.85rem;
   border-radius: 10px;
-  transition: background-color 0.18s ease, color 0.18s ease,
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
     transform 0.18s ease;
 }
 
@@ -189,7 +195,9 @@ div[class*="container"],
   background-clip: text;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* contraste para destacar */
   opacity: 0;
-  animation: fadeInScale 1.5s ease-out forwards, gradientMove 4s linear infinite,
+  animation:
+    fadeInScale 1.5s ease-out forwards,
+    gradientMove 4s linear infinite,
     glow 2s ease-in-out infinite alternate;
 }
 
@@ -242,7 +250,9 @@ div[class*="container"],
   background: #fff;
   border: 1px solid rgba(11, 46, 77, 0.08);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  transition: transform 0.25s ease, box-shadow 0.25s ease,
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
     border-color 0.25s ease;
   text-decoration: none;
 }
@@ -269,7 +279,9 @@ div[class*="container"],
   height: 100%;
   object-fit: contain; /* ✅ muestra la imagen completa */
   padding: 8px 12px; /* margen interno para que no “toque” bordes */
-  transition: transform 0.35s ease, filter 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
 }
 
 .service-card:hover .service-img {
@@ -319,7 +331,10 @@ div[class*="container"],
   font-weight: 700;
   color: var(--brand-navy);
   border-bottom: 2px solid transparent;
-  transition: gap 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    gap 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 .service-card:hover .service-cta {
   gap: 0.65rem;
@@ -329,7 +344,8 @@ div[class*="container"],
 
 /* ====== Skin 1: Glow (resplandor dorado sutil) ====== */
 .service-card--glow {
-  background-image: linear-gradient(#fff, #fff),
+  background-image:
+    linear-gradient(#fff, #fff),
     radial-gradient(120% 80% at 100% 0%, var(--brand-gold-20), transparent 60%);
   background-origin: border-box;
   background-clip: padding-box, border-box;
@@ -338,10 +354,8 @@ div[class*="container"],
 
 /* ====== Skin 2: Glass (borde degradado + glassy) ====== */
 .service-card--glass {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.92),
-      rgba(255, 255, 255, 0.96)
-    ),
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.96)),
     linear-gradient(135deg, var(--brand-gold), var(--turquesa));
   background-clip: padding-box, border-box;
   border: 1px solid transparent;
@@ -357,13 +371,28 @@ div[class*="container"],
   box-shadow: 0 18px 44px rgba(214, 183, 122, 0.18);
 }
 
-/* ====== Ajustes del section Servicios ====== */
+/* ====== Ajustes del section Servicios ====== 
 #servicios .row > [class*="col-"] {
   display: grid;
 }
 #servicios .row > [class*="col-"] > a,
 #servicios .row > [class*="col-"] > .service-card {
   height: 100%;
+}
+*/
+/* ====== Ajustes del section Servicios (FIX iPhone) ====== */
+#servicios .row > [class*="col-"] {
+  display: flex; /* en vez de grid */
+}
+
+#servicios .row > [class*="col-"] > a {
+  display: flex;
+  width: 100%;
+}
+
+/* Mantiene la card estirándose “dentro” del link sin usar height:100% conflictivo */
+#servicios .service-card {
+  width: 100%;
 }
 
 /* ====== Responsive ====== */
@@ -527,6 +556,7 @@ button.btn-plazola:hover,
   flex: 1;
   max-width: 600px;
 }
+
 .sobre-mi-texto p {
   font-size: 1.1rem;
   line-height: 1.7;
@@ -544,8 +574,9 @@ button.btn-plazola:hover,
 }
 
 .btn-saber-mas {
-  display: inline-block;
-  color: #000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 28px;
   border: 1px solid #000;
   border-radius: 50px;
@@ -561,13 +592,6 @@ button.btn-plazola:hover,
   background-color: #000;
   color: #fff;
   text-decoration: none;
-}
-
-.sobre-mi-redes {
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .sobre-mi-redes i {
@@ -662,7 +686,8 @@ button.btn-plazola:hover,
   background: #fff;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
   border: 1px solid transparent;
-  background-image: linear-gradient(#fff, #fff),
+  background-image:
+    linear-gradient(#fff, #fff),
     linear-gradient(135deg, var(--dorado), var(--turquesa));
   background-origin: border-box;
   background-clip: padding-box, border-box;
@@ -673,7 +698,10 @@ button.btn-plazola:hover,
   border-radius: 14px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: rgba(255, 255, 255, 0.9);
-  transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s,
+    background 0.2s;
 }
 .contacto-input:focus {
   border-color: rgba(0, 0, 0, 0.18);
@@ -694,7 +722,8 @@ button.btn-plazola:hover,
 
 /* Fondo general con textura suave y profundidad */
 .querato-section {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       1000px 600px at 80% 0%,
       rgba(214, 183, 122, 0.12),
       transparent 60%
@@ -717,7 +746,9 @@ button.btn-plazola:hover,
 .querato-hero-img {
   border: 3px solid rgba(214, 183, 122, 0.3);
   border-radius: 1rem;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 .querato-hero-img:hover {
   transform: translateY(-3px);
@@ -753,7 +784,9 @@ button.btn-plazola:hover,
 .info-card {
   border: 1px solid rgba(11, 46, 77, 0.08);
   background-color: var(--brand-white);
-  transition: transform 0.25s ease, box-shadow 0.25s ease,
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
     border-color 0.25s ease;
   position: relative;
   overflow: hidden;
@@ -781,7 +814,9 @@ button.btn-plazola:hover,
   background: var(--brand-white);
   border: 1px solid rgba(11, 46, 77, 0.1);
   border-left: 5px solid var(--brand-gold);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
   border-radius: 0.75rem;
 }
 .feature-box:hover {
@@ -794,7 +829,8 @@ button.btn-plazola:hover,
   max-width: 260px;
   margin: 0 auto;
   border: 2px dashed rgba(11, 46, 77, 0.15) !important;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       180px 180px at 70% 30%,
       rgba(214, 183, 122, 0.12),
       transparent 60%
@@ -860,7 +896,9 @@ button.btn-plazola:hover,
   object-fit: cover; /* mantiene un recorte natural sin deformar */
   border-radius: 8px; /* bordes suaves, no redondeados */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   margin: 0 auto;
 }
 
@@ -869,16 +907,23 @@ button.btn-plazola:hover,
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.15);
 }
 .sobre-mi-redes {
-  margin-top: 1rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid #000;
+  border-radius: 50px;
+  background-color: transparent;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .sobre-mi-redes i {
   font-size: 1.5rem;
   color: #d62976; /* color Instagram */
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .sobre-mi-redes a {

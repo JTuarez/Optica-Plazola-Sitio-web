@@ -30,17 +30,18 @@ export default function ReservasForm({ onCreated }) {
 
   const days = useMemo(
     () => Array.from({ length: 42 }, (_, i) => start.add(i, "day")),
-    [start]
+    [start],
   );
 
   const isPast = (d) => d.isBefore(dayjs().startOf("day"), "day");
+  const isSunday = (d) => d.day() === 0; // 🔥 agregado
   const isToday = (d) => d.isSame(dayjs(), "day");
   const isSelected = (d) => d.isSame(selectedDate, "day");
   const inCurrentMonth = (d) => d.isSame(viewMonth, "month");
   const nextMonth = () => setViewMonth((m) => m.add(1, "month"));
   const prevMonth = () => setViewMonth((m) => m.subtract(1, "month"));
 
-  // -------- Form (declarado ANTES de fetchSlots) --------
+  // -------- Form --------
   const {
     register,
     handleSubmit,
@@ -61,11 +62,8 @@ export default function ReservasForm({ onCreated }) {
     setLoadingSlots(true);
     try {
       const fecha = dateObj.format("YYYY-MM-DD");
-
-      // horas ocupadas desde el backend
       const { data: horasReservadas } = await getDisponibilidad(fecha);
 
-      // horario base del día
       const base = [
         "11:00",
         "12:00",
@@ -77,7 +75,6 @@ export default function ReservasForm({ onCreated }) {
         "18:00",
       ];
 
-      // marca como no disponible las reservadas
       const data = base.map((t) => ({
         time: t,
         disponible: !horasReservadas.includes(t),
@@ -97,13 +94,11 @@ export default function ReservasForm({ onCreated }) {
 
   useEffect(() => {
     fetchSlots(selectedDate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
   const selectedSlot = watch("slot");
 
   const onSubmit = async (values) => {
-    // construye fecha local simple
     const fechaStr = `${selectedDate.format("YYYY-MM-DD")} ${values.slot}`;
     const fechaFinal = dayjs(fechaStr, "YYYY-MM-DD HH:mm");
 
@@ -118,7 +113,7 @@ export default function ReservasForm({ onCreated }) {
       toast.success("Reserva creada y correo enviado ✅");
       reset({ nombre_cliente: "", email: "", slot: "" });
       onCreated?.();
-      fetchSlots(selectedDate); // refresca para marcar ocupado
+      fetchSlots(selectedDate);
     } catch (e) {
       if (e?.response?.status === 409) {
         toast.error("Ese horario ya fue reservado. Elige otro.");
@@ -195,7 +190,7 @@ export default function ReservasForm({ onCreated }) {
                       <div key={w} className="calendar-week">
                         {w}
                       </div>
-                    )
+                    ),
                   )}
                   {days.map((d) => (
                     <button
@@ -205,10 +200,12 @@ export default function ReservasForm({ onCreated }) {
                         isSelected(d) ? "selected" : "",
                         isToday(d) ? "today" : "",
                         !inCurrentMonth(d) ? "text-muted" : "",
-                        isPast(d) ? "disabled" : "",
+                        isPast(d) || isSunday(d) ? "disabled" : "",
                       ].join(" ")}
-                      onClick={() => !isPast(d) && setSelectedDate(d)}
-                      disabled={isPast(d)}
+                      onClick={() =>
+                        !isPast(d) && !isSunday(d) && setSelectedDate(d)
+                      }
+                      disabled={isPast(d) || isSunday(d)}
                     >
                       <div className="calendar-day">{d.date()}</div>
                     </button>

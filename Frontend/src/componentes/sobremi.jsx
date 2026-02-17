@@ -25,20 +25,21 @@ export default function SobreMi() {
             Mi mision es encontrar la solucion visual personalizada a cada
             paciente
           </p>
+          <div className="d-flex align-items-center gap-4 mt-3">
+            <Link to="/sobremidos" className="btn-saber-mas">
+              Saber más &gt;
+            </Link>
 
-          <Link to="/sobremidos" className="btn-saber-mas">
-            Saber más &gt;
-          </Link>
-
-          <div className="sobre-mi-redes">
-            <i className="fab fa-instagram"></i>
-            <a
-              href="https://www.instagram.com/optica.plazola"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @Optica.Plazola
-            </a>
+            <div className="sobre-mi-redes">
+              <i className="fab fa-instagram"></i>
+              <a
+                href="https://www.instagram.com/optica.plazola"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @Optica.Plazola
+              </a>
+            </div>
           </div>
         </div>
       </div>
