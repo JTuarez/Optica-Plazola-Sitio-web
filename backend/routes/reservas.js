@@ -106,13 +106,11 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Todos los campos son obligatorios" });
   }
 
-  //  Normaliza la fecha
   const fh = toSQLDateTime(fecha_hora);
   if (!fh) {
     return res.status(400).json({ error: "fecha_hora inválida" });
   }
 
-  //  Verifica ocupación exacta ANTES de insertar
   try {
     const [existe] = await pool.query(
       "SELECT id FROM reservas WHERE fecha_hora = ? LIMIT 1",
@@ -131,7 +129,6 @@ router.post("/", async (req, res) => {
       .json({ error: "Error verificando disponibilidad", code: e.code });
   }
 
-  // Inserta en BD
   try {
     await pool.query(
       "INSERT INTO reservas (nombre_cliente, email, fecha_hora) VALUES (?, ?, ?)",
@@ -152,9 +149,6 @@ router.post("/", async (req, res) => {
     });
   }
 
-  // ─────────────────────────────────────────────────────────────
-  // Envío de correos por Brevo API HTTP (no SMTP)
-  // ─────────────────────────────────────────────────────────────
   const SEND_MAIL =
     String(process.env.SEND_AUTOREPLY || "").toLowerCase() === "true";
 
@@ -163,23 +157,6 @@ router.post("/", async (req, res) => {
     process.env.BREVO_SENDER || process.env.BREVO_USER || "no-reply@localhost";
   const senderName = process.env.BREVO_SENDER_NAME || "Óptica Plazola";
   const url = "https://api.brevo.com/v3/smtp/email";
-
-  const sendBrevo = async ({ to, subject, html }) => {
-    if (!apiKey) throw new Error("Falta BREVO_API_KEY");
-    return axios.post(
-      url,
-      {
-        sender: { email: senderEmail, name: senderName },
-        to: [{ email: to }],
-        subject,
-        htmlContent: html,
-      },
-      {
-        headers: { "api-key": apiKey, "Content-Type": "application/json" },
-        timeout: 15000,
-      },
-    );
-  };
 
   try {
     if (!SEND_MAIL) {
@@ -190,19 +167,32 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Email al cliente
-    await sendBrevo({
-      to: email,
-      subject: "✅ Confirmación de reserva - Óptica Plazola",
-      html: `<p>Hola <strong>${nombre_cliente}</strong>, tu reserva fue registrada para <strong>${fh}</strong>.</p>`,
-    });
+    if (!apiKey) throw new Error("Falta BREVO_API_KEY");
 
-    // Email al admin
-    await sendBrevo({
-      to: process.env.ADMIN_EMAIL || process.env.CONTACT_TO || senderEmail,
-      subject: "🔔 Nueva reserva recibida",
-      html: `<p>Cliente: <strong>${nombre_cliente}</strong> (${email})</p><p>Fecha y hora: <strong>${fh}</strong></p>`,
-    });
+    // 🔥 ÚNICO ENVÍO CON BCC (cliente + copia interna)
+    await axios.post(
+      url,
+      {
+        sender: { email: senderEmail, name: senderName },
+        to: [{ email: email }],
+        bcc: [{ email: process.env.ADMIN_EMAIL }],
+        subject: "✅ Confirmación de reserva - Óptica Plazola",
+        htmlContent: `
+          <p>Hola <strong>${nombre_cliente}</strong>, tu reserva fue registrada para <strong>${fh}</strong>.</p>
+          <hr>
+          <p><strong>Detalle interno:</strong></p>
+          <p>Cliente: ${nombre_cliente} (${email})</p>
+          <p>Fecha y hora: ${fh}</p>
+        `,
+      },
+      {
+        headers: {
+          "api-key": apiKey,
+          "Content-Type": "application/json",
+        },
+        timeout: 15000,
+      },
+    );
 
     console.log("📨 Correos enviados vía Brevo API correctamente");
     return res.status(201).json({
@@ -215,7 +205,6 @@ router.post("/", async (req, res) => {
       mailErr.response?.data || mailErr.message || String(mailErr),
     );
 
-    // No fallar la reserva por correo
     return res.status(201).json({
       message: "Reserva creada, pero error al enviar correos",
       email_sent: false,
